@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use [models-path]\[model];
+use Livewire\Component;
+
+class [model]DetailComponent extends Component
+{
+    public bool $show = false;
+
+    public [model] $[model-snake];
+
+    public function render()
+    {
+        return view('livewire.[component-name-kebab]-detail');
+    }
+    /**
+     * Show model details.
+     *
+     * @param [model] $[model-snake]
+     * @return void
+     */
+    public function details([model] $[model-snake])
+    {
+        $this->reset(['show']);
+
+        $[model-snake]->load('address');
+        $this->[model-snake] = $[model-snake];
+
+        $this->show = true;
+    }
+    /**
+     * Close all modals
+     *
+     * @return void
+     */
+    public function closeModal()
+    {
+        $this->reset(['show']);
+    }
+}

@@ -1,0 +1,161 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use [models-path]\[model];
+use Livewire\Component;
+
+class [model]FormComponent extends Component
+{
+    /**
+     * Display modal form
+     */
+    public bool $show = false;
+    /**
+     * Computed property
+     */
+    public bool $editing = false;
+    /**
+     * Control delete modal
+     */
+    public bool $deleteModal = false;
+    /**
+     * Control is editing status
+     */
+    public [model] $[model-snake];
+    /**
+     * Array of fields to serve as model
+     */
+    public array $fields = [
+        'name' => '',
+        // Add more as needed
+    ];
+    /**
+     * Validation Rules
+     */
+    protected array $rules = [
+        'fields.name' => 'required|min:3',
+        // Add more as needed
+    ];
+    public function mount([model] $[model-snake] = null)
+    {
+        $this->[model-snake] = $[model-snake];
+    }
+    /**
+     * Render the view
+     *
+     * @return void
+     */
+    public function render()
+    {
+        $this->editing = collect($this->[model-snake])->isNotEmpty();
+
+        return view('livewire.[component-name-kebab]-form');
+    }
+    /**
+     * Display the create form.
+     *
+     * @return void
+     */
+    public function create()
+    {
+        $this->resetValidation();
+        $this->show = true;
+        $this->reset(['fields', 'editing', 'deleteModal']);
+    }
+    /**
+     * Store the new model.
+     *
+     * @return void
+     */
+    public function store()
+    {
+        $this->validate();
+
+        $[model-snake] = [model]::create($this->fields);
+
+        $this->emit('[model-snake]Saved');
+
+        $this->closeModal();
+    }
+    /**
+     * Display the edit form.
+     *
+     * @param [model] $[model-snake]
+     * @return void
+     */
+    public function edit([model] $[model-snake])
+    {
+        $this->resetValidation();
+        $this->reset(['fields', 'editing', 'deleteModal']);
+        $this->show = true;
+
+        $this->fill(['fields' => $[model-snake]->toArray()]);
+    }
+    /**
+     * Update the current model.
+     *
+     * @return void
+     */
+    public function update()
+    {
+        $this->validate();
+
+        $[model-snake] = [model]::findOrFail($this->fields['id']);
+
+        $[model-snake]->update($this->fields);
+
+        $this->emit('[model-snake]Saved');
+
+        $this->closeModal();
+    }
+    /**
+     * Reset validation when variables are updated
+     *
+     * @param string $propertyName
+     * @return void
+     */
+    public function updated($propertyName)
+    {
+        $this->validateOnly($propertyName);
+    }
+    /**
+     * Display the delete modal.
+     *
+     * @param [model] $[model-snake]
+     * @return void
+     */
+    public function prepareDelete([model] $[model-snake])
+    {
+        $this->reset(['fields', 'editing', 'deleteModal']);
+        $this->deleteModal = true;
+    }
+    /**
+     * Delete current model.
+     *
+     * @param [model] $[model-snake]
+     * @return void
+     */
+    public function delete([model] $[model-snake])
+    {
+        $[model-snake]->delete();
+
+        $this->emit('[model-snake]Saved');
+        $this->closeModal();
+    }
+    /**
+     * Close all modals
+     *
+     * @return void
+     */
+    public function closeModal()
+    {
+        $this->resetValidation();
+        $this->reset(['fields', 'editing', 'deleteModal', 'show']);
+    }
+    /**
+     * Resete all fields
+     *
+     * @return void
+     */
+}

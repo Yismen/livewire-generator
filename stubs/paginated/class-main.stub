@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use [models-path]\[model];
+use Livewire\Component;
+
+class [component-name] extends Component
+{
+    use PaginationTrait;
+
+    public [model] $[model-snake];
+    /**
+     * Event Listeners
+     *
+     * @var array
+     */
+    protected $listeners = ['[model-snake]Saved' => '$refresh'];
+    /**
+     * Render the view when variables are updated.
+     *
+     * @return void
+     */
+    public function render()
+    {
+        return view('livewire.[component-name-kebab]', [
+            '[model-plural]' => $this->getPaginatedData(
+                $query = [model]::query(),
+                $searchableFields =  ['name']
+            )
+        ]);
+    }
+}
