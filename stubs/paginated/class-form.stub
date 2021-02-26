@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use [models-path]\[model];
 use Livewire\Component;
 
-class [model]FormComponent extends Component
+class [component-name]Form extends Component
 {
     /**
      * Display modal form

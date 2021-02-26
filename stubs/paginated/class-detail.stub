@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use [models-path]\[model];
 use Livewire\Component;
 
-class [model]DetailComponent extends Component
+class [component-name]Detail extends Component
 {
     public bool $show = false;
 
@@ -24,8 +24,7 @@ class [model]DetailComponent extends Component
     public function details([model] $[model-snake])
     {
         $this->reset(['show']);
-
-        $[model-snake]->load('address');
+        
         $this->[model-snake] = $[model-snake];
 
         $this->show = true;

@@ -24,7 +24,7 @@ class [component-name] extends Component
     public function render()
     {
         return view('livewire.[component-name-kebab]', [
-            '[model-plural]' => $this->getPaginatedData(
+            '[model-snake-plural]' => $this->getPaginatedData(
                 $query = [model]::query(),
                 $searchableFields =  ['name']
             )

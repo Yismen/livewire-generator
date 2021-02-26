@@ -5,7 +5,7 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight p-3">
                     {{ __('[model-plural]') }}
                 </h2>
-                @livewire('[model-snake]-form-component')
+                @livewire('[component-name-kebab]-form')
             </div>
             <div class="flex w-full lg:w-1/2 justify-between mt-3 lg:ml-2 lg:mt-0">
                 <select wire:model="amount" class="border-gray-300 py-2 rounded text-grey-darker">
@@ -56,8 +56,8 @@
                         
                         <td class="px-4 py-1 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
                             <div class="inline-block whitespace-no-wrap">
-                                @livewire('[model-snake]-form-component', ['[model-snake]' => $[model-snake]], key("edit-" . $[model-snake]->id))
-                                @livewire('[model-snake]-detail-component', ['[model-snake]' => $[model-snake]], key("detail-" . $[model-snake]->id))
+                                @livewire('[component-name-kebab]-form', ['[model-snake]' => $[model-snake]], key("edit-" . $[model-snake]->id))
+                                @livewire('[component-name-kebab]-detail', ['[model-snake]' => $[model-snake]], key("detail-" . $[model-snake]->id))
                             </div>
                         </td>
                     </tr>
