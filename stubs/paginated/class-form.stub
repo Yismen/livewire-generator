@@ -37,6 +37,19 @@ class [component-name]Form extends Component
         'fields.name' => 'required|min:3',
         // Add more as needed
     ];
+    /**
+     * Customize validation error attributes
+     */
+    protected array $validationAttributes = [
+        'fields.name' => 'name',
+        // Add more as needed
+    ];
+    /**
+     * Component constructor method
+     *
+     * @param [model] $[model-snake]
+     * @return void
+     */
     public function mount([model] $[model-snake] = null)
     {
         $this->[model-snake] = $[model-snake];
