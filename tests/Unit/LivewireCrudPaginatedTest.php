@@ -13,7 +13,7 @@ class LivewireCrudPaginatedTest extends TestCase
     {
         $this->expectException(MissingNameException::class);
 
-        $this->artisan('make:livewire-crud-paginated', ['name' => null, 'model' => 'Test'])
+        $this->artisan('make:livewire-crud', ['name' => null, 'model' => 'Test'])
             ->expectsQuestion('Enter Component Name', null);
     }
 
@@ -22,14 +22,14 @@ class LivewireCrudPaginatedTest extends TestCase
     {
         $this->expectException(MissingModelException::class);
 
-        $this->artisan('make:livewire-crud-paginated', ['name' => 'test-component', 'model' => null])
+        $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => null])
             ->expectsQuestion('Enter Model Name', null);
     }
 
     /** @test */
     public function it_creates_the_trait_file()
     {
-        $this->artisan('make:livewire-crud-paginated', ['name' => 'test-component', 'model' => 'Test']);
+        $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
 
         $this->assertFileExists($this->classesDirectory . '/PaginationTrait.php');
     }
@@ -37,7 +37,7 @@ class LivewireCrudPaginatedTest extends TestCase
     /** @test */
     public function it_copies_the_icons_stub()
     {
-        $this->artisan('make:livewire-crud-paginated', ['name' => 'test-component', 'model' => 'Test']);
+        $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
 
         $this->assertDirectoryExists($this->viewsDirectory . '/icons');
     }
@@ -45,7 +45,7 @@ class LivewireCrudPaginatedTest extends TestCase
     /** @test */
     public function it_creates_the_main_files()
     {
-        $this->artisan('make:livewire-crud-paginated', ['name' => 'test-component', 'model' => 'Test']);
+        $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
 
         $this->assertFileExists($this->classesDirectory . '/TestComponent.php');
 
@@ -55,7 +55,7 @@ class LivewireCrudPaginatedTest extends TestCase
     /** @test */
     public function it_creates_the_form_files()
     {
-        $this->artisan('make:livewire-crud-paginated', ['name' => 'test-component', 'model' => 'Test']);
+        $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
 
         $this->assertFileExists($this->viewsDirectory . '/test-component-form.blade.php');
 
@@ -65,7 +65,7 @@ class LivewireCrudPaginatedTest extends TestCase
     /** @test */
     public function it_creates_the_detail_files()
     {
-        $this->artisan('make:livewire-crud-paginated', ['name' => 'test-component', 'model' => 'Test']);
+        $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
 
         $this->assertFileExists($this->viewsDirectory . '/test-component-detail.blade.php');
 
