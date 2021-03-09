@@ -1,7 +1,7 @@
 <div class="container mx-auto">
     <div class="bg-white max-w-7xl mx-auto shadow-md my-3">        
         <div class="border-b flex flex-col lg:flex-row items-center justify-content-between p-4 lg:p-0">
-            <div class="flex w-full lg:w-1/2 justify-between lg:mr-2">
+            <div class="flex items-center justify-between lg:mr-2 lg:w-1/2 w-full">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight p-3">
                     {{ __('[model-plural]') }}
                 </h2>
