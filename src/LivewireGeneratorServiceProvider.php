@@ -17,7 +17,7 @@ class LivewireGeneratorServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../config/livewire-generator.php' => config_path('livewire-generator.php'),
-        ]);
+        ], 'livewire-generator:config');
     }
 
     public function register()
