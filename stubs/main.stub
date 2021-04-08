@@ -9,6 +9,8 @@ class [component-name] extends Component
 {
     use PaginationTrait;
 
+    // protected $paginationTheme = 'bootstrap';
+
     public [model] $[model-snake];
     /**
      * Event Listeners
