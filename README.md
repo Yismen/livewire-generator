@@ -1,7 +1,7 @@
 # Dainsys Livewire Generator   
 A livewire CRUD Generator for tailwind and bootstrap 4
 ## Installation
-* Install with `composer` by runining the command `composer require dainsys/components`
+* Install with `composer` by runining the command `composer require dainsys/livewire-generator --dev`
 
 ### Ussage
 * Run artisan command 'php artisan make:livewire-crud'. This command accepts two optional parameters: the componenet file name and the model to be associated to the crud.
