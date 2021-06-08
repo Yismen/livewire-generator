@@ -67,42 +67,26 @@
                 <table class="table table-sm table-hover m-0">
                     <thead>
                         <tr>
-                            <th>Photo</th>
-                            <th>Name</th>
-                            <th>Personal Id / Passport</th>
-                            <th>Phone Numbers</th>
-                            <th>Hire Date</th>
+                            <th>
+                                <a href="#" wire:click.prevent="sortBy('hire_date')" class="flex flex-row justify-between items-center">
+                                    {{ __('Hire Date') }} 
+                                    <span>{{ $this->getIcon('hire_date') }}</span>
+                                </a>
+                            </th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($[model-snake-plural] as $[model-snake])
                             <tr>
-                                <td>
-                                    @if ($[model-snake]->photo)
-                                        <a href="{{ asset($[model-snake]->photo ) }}" target="__new">
-                                            <img src="{{ asset($[model-snake]->photo ) }}" class="img-thumbnail rounded-circle" alt="" width="32px">
-                                        </a>
-                                    @endif
-                                </td>
-                                <td scope="row">                                    
-                                    <a href="#" wire:click.prevent="detail({{ $[model-snake]->id }})">
-                                        {{ $[model-snake]->full_name }}
-                                    </a>
-                                </td>
-                                <td>{{ $[model-snake]->personal_id ?: $[model-snake]->passport }}</td>
-                                <td>
-                                    <a href="tel:+{{ $[model-snake]->cellphone_number }}">{{ $[model-snake]->cellphone_number }}</a>
-                                    @if ($[model-snake]->secondary_phone)
-                                    / <a href="tel:+{{ $[model-snake]->secondary_phone }}">{{ $[model-snake]->secondary_phone }}</a>
-                                    @endif
-                                </td>
                                 <td>{{ $[model-snake]->hire_date->format('M-d-Y') }}</td>
                                 <td>
                                     <a href="#" class="btn btn-warning btn-sm" wire:click.prevent="edit({{ $[model-snake]->id }})">
+                                        @include('livewire.icons.pencil') 
                                         {{ __('Edit') }}
                                     </a>
                                     <a href="#" class="btn btn-danger btn-sm" wire:click.prevent="delete({{ $[model-snake]->id }})">
+                                        @include('livewire.icons.trash') 
                                         {{ __('Delete') }}
                                     </a>                                    
                                 </td>
