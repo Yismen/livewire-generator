@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use App\[model];
+use Livewire\Component;
+
+class [component-name] extends Component
+{
+    use PaginationTrait;
+
+    // protected $paginationTheme = 'bootstrap';
+
+    public $[model-snake];
+    /**
+     * Event Listeners
+     *
+     * @var array
+     */
+    protected $listeners = ['[model-snake]Saved' => '$refresh'];
+    /**
+     * Render the view when variables are updated.
+     *
+     * @return void
+     */
+    public function render()
+    {
+        $this->defaultSortField = 'first_name';
+
+        return view('livewire.[component-name-kebab]', [
+            '[model-snake-plural]' => $this->getPaginatedData(
+                $query = [model]::query(),
+                $searchableFields =  [
+                    'first_name',
+                ]
+            )
+        ]);
+    }
+
+    public function create()
+    {
+        $this->emitTo('[component-name-kebab]-form', 'wantsCreate[model]');
+    }
+
+    public function edit([model] $[model-snake])
+    {
+        $this->emitTo('[component-name-kebab]-form', 'wantsEdit[model]', $[model-snake]);
+    }
+
+    public function delete([model] $[model-snake])
+    {
+        $this->emitTo('[component-name-kebab]-form', 'wantsDelete[model]', $[model-snake]);
+    }
+
+    public function detail([model] $[model-snake])
+    {
+        $this->emitTo('[component-name-kebab]-detail', 'wantsDetail[model]', $[model-snake]);
+    }
+}

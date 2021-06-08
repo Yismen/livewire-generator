@@ -66,10 +66,10 @@ abstract class Generator implements GeneratorContract
         return $this->handlePaginationTrait()
             ->handleCopyIcons()
             ->createMainView()
-            ->createMainComponent()
             ->createFormView()
-            ->createFormComponent()
             ->createDetailView()
+            ->createMainComponent()
+            ->createFormComponent()
             ->createDetailComponent();
     }
     /**
@@ -107,7 +107,7 @@ abstract class Generator implements GeneratorContract
     protected function createMainComponent(): Generator
     {
         $destinationPath = "{$this->classesPath}/{$this->componentName}.php";
-        $content = $this->parseContent(File::get($this->stubsPath . '/../main.stub.'));
+        $content = $this->parseContent(File::get($this->stubsPath . '/classes/main.stub.'));
 
         return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->classesPath);
     }
@@ -219,8 +219,8 @@ abstract class Generator implements GeneratorContract
         $content = str_replace('[component-name-kebab]', Str::kebab($this->componentName), $content);
         $content = str_replace('[model-plural]', Str::of($this->modelName)->studly()->plural(), $content);
         $content = str_replace('[model-snake-plural]', Str::of($this->modelName)->snake()->plural(), $content);
-        $content = str_replace('[model-snake]', Str::snake($this->modelName), $content);
         $content = str_replace('[model]', $this->modelName, $content);
+        $content = str_replace('[model-snake]', Str::snake($this->modelName), $content);
         $content = str_replace('[models-path]', $this->modelsDir, $content);
 
         return $content;
