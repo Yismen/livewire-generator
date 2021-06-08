@@ -27,19 +27,19 @@ class LivewireCrudPaginatedTest extends TestCase
     }
 
     /** @test */
-    public function it_creates_the_trait_file()
-    {
-        $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
-
-        $this->assertFileExists($this->classesDirectory . '/PaginationTrait.php');
-    }
-
-    /** @test */
     public function it_copies_the_icons_stub()
     {
         $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
 
         $this->assertDirectoryExists($this->viewsDirectory . '/icons');
+    }
+
+    /** @test */
+    public function it_creates_the_trait_file()
+    {
+        $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
+
+        $this->assertFileExists($this->classesDirectory . '/PaginationTrait.php');
     }
 
     /** @test */
@@ -57,9 +57,9 @@ class LivewireCrudPaginatedTest extends TestCase
     {
         $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
 
-        $this->assertFileExists($this->viewsDirectory . '/test-component-form.blade.php');
-
         $this->assertFileExists($this->classesDirectory . '/TestComponentForm.php');
+
+        $this->assertFileExists($this->viewsDirectory . '/test-component-form.blade.php');
     }
 
     /** @test */
@@ -67,8 +67,8 @@ class LivewireCrudPaginatedTest extends TestCase
     {
         $this->artisan('make:livewire-crud', ['name' => 'test-component', 'model' => 'Test']);
 
-        $this->assertFileExists($this->viewsDirectory . '/test-component-detail.blade.php');
-
         $this->assertFileExists($this->classesDirectory . '/TestComponentDetail.php');
+
+        $this->assertFileExists($this->viewsDirectory . '/test-component-detail.blade.php');
     }
 }

@@ -14,7 +14,7 @@ abstract class Generator implements GeneratorContract
     /**
      * Dir location for the component class
      */
-    protected string $classesPath;
+    protected string $mainFolderPath;
     /**
      * Override files if exists
      */
@@ -53,7 +53,7 @@ abstract class Generator implements GeneratorContract
     ) {
         $this->viewsPath = resource_path('/views/livewire');
 
-        $this->classesPath = app_path('/Http/Livewire');
+        $this->mainFolderPath = app_path('/Http/Livewire');
 
         $this->componentName = $componentName;
 
@@ -65,12 +65,12 @@ abstract class Generator implements GeneratorContract
 
         return $this->handlePaginationTrait()
             ->handleCopyIcons()
-            ->createMainView()
-            ->createFormView()
-            ->createDetailView()
             ->createMainComponent()
             ->createFormComponent()
-            ->createDetailComponent();
+            ->createDetailComponent()
+            ->createFormView()
+            ->createMainView()
+            ->createDetailView();
     }
     /**
      * Handle PaginationTrait stub.
@@ -79,11 +79,11 @@ abstract class Generator implements GeneratorContract
      */
     protected function handlePaginationTrait(): Generator
     {
-        $destinationPath = $this->classesPath . '/PaginationTrait.php';
+        $destinationPath = $this->mainFolderPath . '/PaginationTrait.php';
 
         $content = File::get($this->stubsPath . '/../pagination.stub');
 
-        return $this->createFile($destinationPath, $content, $warnFileExists = false, $this->classesPath);
+        return $this->createFile($destinationPath, $content, $warnFileExists = false, $this->mainFolderPath);
     }
     /**
      * Handle creating the view.
@@ -106,10 +106,10 @@ abstract class Generator implements GeneratorContract
      */
     protected function createMainComponent(): Generator
     {
-        $destinationPath = "{$this->classesPath}/{$this->componentName}.php";
+        $destinationPath = "{$this->mainFolderPath}/{$this->componentName}.php";
         $content = $this->parseContent(File::get($this->stubsPath . '/classes/main.stub.'));
 
-        return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->classesPath);
+        return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->mainFolderPath);
     }
     /**
      * Handle creating the view.
@@ -120,7 +120,7 @@ abstract class Generator implements GeneratorContract
     {
         $kebabName = Str::kebab($this->componentName);
         $destinationPath = "{$this->viewsPath}/{$kebabName}-form.blade.php";
-        $content = $this->parseContent(File::get($this->stubsPath . '/form.stub.'));
+        $content = $this->parseContent(File::get($this->stubsPath . '/form.stub'));
 
         return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->viewsPath);
     }
@@ -131,10 +131,10 @@ abstract class Generator implements GeneratorContract
      */
     protected function createFormComponent(): Generator
     {
-        $destinationPath = "{$this->classesPath}/{$this->componentName}Form.php";
-        $content = $this->parseContent(File::get($this->stubsPath . '/../form.stub.'));
+        $destinationPath = "{$this->mainFolderPath}/{$this->componentName}Form.php";
+        $content = $this->parseContent(File::get($this->stubsPath . '/classes/form.stub.'));
 
-        return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->classesPath);
+        return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->mainFolderPath);
     }
     /**
      * Handle creating the view.
@@ -156,10 +156,10 @@ abstract class Generator implements GeneratorContract
      */
     protected function createDetailComponent(): Generator
     {
-        $destinationPath = "{$this->classesPath}/{$this->componentName}Detail.php";
-        $content = $this->parseContent(File::get($this->stubsPath . '/../detail.stub.'));
+        $destinationPath = "{$this->mainFolderPath}/{$this->componentName}Detail.php";
+        $content = $this->parseContent(File::get($this->stubsPath . '/classes/detail.stub.'));
 
-        return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->classesPath);
+        return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->mainFolderPath);
     }
     /**
      * Handle Icons stub.
