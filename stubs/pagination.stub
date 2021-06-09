@@ -8,6 +8,8 @@ use Livewire\WithPagination;
 trait PaginationTrait
 {
     use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
     /**
      * Field to sort by
      */
@@ -129,7 +131,16 @@ trait PaginationTrait
             foreach (explode(" ", $this->search) as $value) {
                 $this->model->where(function ($query) use ($value) {
                     foreach ($this->searchabeFields as $field) {
-                        $query->orWhere($field, 'like', "%{$value}%");
+                        $fields = explode('.', $field, 2);
+                        if (count($fields) == 1) {
+                            $query->orWhere($fields[0], 'like', "%{$value}%");
+                        } else {
+                            $relation = $fields[0];
+                            $field_name = $fields[1];
+                            $query->orWhereHas($relation, function ($query) use ($field_name, $value) {
+                                $query->where($field_name, 'like', "%{$value}%");
+                            });
+                        }
                     }
                 });
             }
@@ -147,7 +158,11 @@ trait PaginationTrait
         if (!$this->sortBy) {
             $this->model->orderBy($this->defaultSortField);
         } else {
-            $this->model->orderBy($this->sortBy, $this->sortDirection);
+            $sorts = explode('.', $this->sortBy);
+
+            if (count($sorts) == 1) {
+                $this->model->orderBy($sorts[0], $this->sortDirection);
+            }
         }
 
         return $this;
