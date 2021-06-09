@@ -62,7 +62,10 @@ abstract class Generator implements GeneratorContract
         $this->force = $force;
 
         $this->modelsDir = $modelsDir;
+    }
 
+    public function handle()
+    {
         return $this->handlePaginationTrait()
             ->handleCopyIcons()
             ->createMainComponent()
@@ -224,5 +227,10 @@ abstract class Generator implements GeneratorContract
         $content = str_replace('[models-path]', $this->modelsDir, $content);
 
         return $content;
+    }
+
+    protected function setStubsPath(string $path = null)
+    {
+        $this->stubsPath = $path ?: __DIR__ . '/../../stubs/' . Str::snake(class_basename($this));
     }
 }

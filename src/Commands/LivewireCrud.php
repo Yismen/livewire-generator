@@ -4,8 +4,6 @@ namespace Dainsys\LivewireGenerator\Commands;
 
 use Dainsys\LivewireGenerator\Exceptions\MissingModelException;
 use Dainsys\LivewireGenerator\Exceptions\MissingNameException;
-use Dainsys\LivewireGenerator\Generators\Bootstrap;
-use Dainsys\LivewireGenerator\Generators\Tailwind;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
@@ -49,8 +47,8 @@ class LivewireCrud extends Command
      */
 
     protected $generators = [
-        'tailwind' => Tailwind::class,
-        'bootstrap' => Bootstrap::class,
+        'tailwind' => \Dainsys\LivewireGenerator\Generators\Tailwind::class,
+        'bootstrap' => \Dainsys\LivewireGenerator\Generators\Bootstrap::class,
     ];
 
     public function __construct()
@@ -67,18 +65,20 @@ class LivewireCrud extends Command
     {
         $this->handleArguments();
 
-        $command = new $this->generators[$this->option('preset')](
+        $generator = new $this->generators[$this->option('preset')](
             $this->componentName,
             $this->modelName,
             $this->option('force'),
             $this->option('models-dir'),
         );
 
-        foreach ($command->warns as $warn) {
+        $generator->handle();
+
+        foreach ($generator->warns as $warn) {
             $this->warn($warn);
         }
 
-        foreach ($command->infos as $info) {
+        foreach ($generator->infos as $info) {
             $this->info($info);
         }
     }
