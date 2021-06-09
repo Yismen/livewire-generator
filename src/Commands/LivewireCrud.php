@@ -65,18 +65,20 @@ class LivewireCrud extends Command
     {
         $this->handleArguments();
 
-        $command = new $this->generators[$this->option('preset')](
+        $generator = new $this->generators[$this->option('preset')](
             $this->componentName,
             $this->modelName,
             $this->option('force'),
             $this->option('models-dir'),
         );
 
-        foreach ($command->warns as $warn) {
+        $generator->handle();
+
+        foreach ($generator->warns as $warn) {
             $this->warn($warn);
         }
 
-        foreach ($command->infos as $info) {
+        foreach ($generator->infos as $info) {
             $this->info($info);
         }
     }
