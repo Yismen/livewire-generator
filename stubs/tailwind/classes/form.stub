@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\[model];
 
 use [models-path]\[model];
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
-class [component-name]Form extends Component
+class [model]ComponentForm extends Component
 {
+    use AuthorizesRequests;
     /**
      * Display modal form
      */
@@ -28,21 +30,25 @@ class [component-name]Form extends Component
      */
     public array $fields = [
         'name' => '',
-        // Add more as needed
-    ];
-    /**
-     * Validation Rules
-     */
-    protected array $rules = [
-        'fields.name' => 'required|min:3',
-        // Add more as needed
     ];
     /**
      * Customize validation error attributes
      */
     protected array $validationAttributes = [
         'fields.name' => 'name',
+    ];
+
+    protected $rules = [
+        'fields.name' => 'required|min:2',
         // Add more as needed
+    ];
+    /**
+     * Add Event Listeners
+     * 
+     * @var array
+     */
+    protected $listeners = [
+        'wantsEdit[model]' => 'edit',
     ];
     /**
      * Component constructor method
@@ -61,9 +67,7 @@ class [component-name]Form extends Component
      */
     public function render()
     {
-        $this->editing = collect($this->[model-snake])->isNotEmpty();
-
-        return view('livewire.[component-name-kebab]-form');
+        return view('livewire.[model-snake]-form');
     }
     /**
      * Display the create form.
@@ -72,6 +76,8 @@ class [component-name]Form extends Component
      */
     public function create()
     {
+        $this->authorize('create', [model]::class);
+
         $this->resetValidation();
         $this->show = true;
         $this->reset(['fields', 'editing', 'deleteModal']);
@@ -83,6 +89,8 @@ class [component-name]Form extends Component
      */
     public function store()
     {
+        $this->authorize('create', [model]::class);
+
         $this->validate();
 
         $[model-snake] = [model]::create($this->fields);
@@ -99,11 +107,15 @@ class [component-name]Form extends Component
      */
     public function edit([model] $[model-snake])
     {
+        $this->authorize('update', $[model-snake]);
         $this->resetValidation();
         $this->reset(['fields', 'editing', 'deleteModal']);
-        $this->show = true;
-
-        $this->fill(['fields' => $[model-snake]->toArray()]);
+        
+        $this->fill([
+            'editing' => true,
+            'show' => true,
+            'fields' => $[model-snake]->toArray(),
+        ]);
     }
     /**
      * Update the current model.
@@ -112,9 +124,10 @@ class [component-name]Form extends Component
      */
     public function update()
     {
-        $this->validate();
-
+        $this->authorize('update', $[model-snake]);
         $[model-snake] = [model]::findOrFail($this->fields['id']);
+
+        $this->validate();
 
         $[model-snake]->update($this->fields);
 
@@ -140,6 +153,8 @@ class [component-name]Form extends Component
      */
     public function prepareDelete([model] $[model-snake])
     {
+        $this->authorize('delete', $[model-snake]);
+
         $this->reset(['fields', 'editing', 'deleteModal']);
         $this->deleteModal = true;
     }
@@ -151,6 +166,8 @@ class [component-name]Form extends Component
      */
     public function delete([model] $[model-snake])
     {
+        $this->authorize('delete', $[model-snake]);
+
         $[model-snake]->delete();
 
         $this->emit('[model-snake]Saved');
@@ -166,9 +183,4 @@ class [component-name]Form extends Component
         $this->resetValidation();
         $this->reset(['fields', 'editing', 'deleteModal', 'show']);
     }
-    /**
-     * Resete all fields
-     *
-     * @return void
-     */
 }

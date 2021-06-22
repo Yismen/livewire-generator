@@ -9,9 +9,9 @@ class Tailwind extends Generator
      */
     protected string $stubsPath;
 
-    public function __construct(string $componentName, string $modelName, bool $force = false, string $modelsDir = 'App\Models')
+    public function __construct(string $modelName, bool $force = false, string $modelsDir = 'App\Models')
     {
-        parent::__construct($componentName, $modelName, $force, $modelsDir);
+        parent::__construct($modelName, $force, $modelsDir);
 
         $this->setStubsPath();
     }

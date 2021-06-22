@@ -20,13 +20,25 @@ abstract class Generator implements GeneratorContract
      */
     protected bool $force;
     /**
-     * The name of the component
-     */
-    protected string $componentName;
-    /**
      * The name of the model to be used
      */
     protected string $modelName;
+    /**
+     * Plural representation of model name: Activity = Activities
+     */
+    protected string $model_name_as_plural;
+    /**
+     * Snake representation of model name: ActivityStudent = activity_student
+     */
+    protected string $model_name_as_snake;
+    /**
+     * Kebab representation of model name: ActivityStudent = activity-student
+     */
+    protected string $model_name_as_kebab;
+    /**
+     * Plural snake representation of model name: Activity = activities
+     */
+    protected string $model_name_as_plural_snake;
     /**
      * Models directory
      */
@@ -46,33 +58,35 @@ abstract class Generator implements GeneratorContract
      * @return void
      */
     public function __construct(
-        string $componentName,
         string $modelName,
         bool $force = false,
         string $modelsDir = 'App\Models'
     ) {
-        $this->viewsPath = resource_path('/views/livewire');
+        $this->viewsPath = resource_path('/views/livewire/' . Str::snake($modelName));
 
-        $this->mainFolderPath = app_path('/Http/Livewire');
+        $this->mainFolderPath = app_path('/Http/Livewire/' . $modelName);
 
-        $this->componentName = $componentName;
-
-        $this->modelName = $modelName;
+        $this->modelsDir = $modelsDir;
 
         $this->force = $force;
 
-        $this->modelsDir = $modelsDir;
+        $this->modelName = $modelName;
+        $this->model_name_as_plural =  Str::of($modelName)->studly()->plural()->__toString();
+        $this->model_name_as_snake =  Str::of($modelName)->snake()->__toString();
+        $this->model_name_as_plural_snake =  Str::of($modelName)->plural()->snake()->__toString();
+        $this->model_name_as_kebab =  Str::of($modelName)->kebab()->__toString();
     }
 
     public function handle()
     {
-        return $this->handlePaginationTrait()
+        return $this
             ->handleCopyIcons()
-            ->createMainComponent()
+            ->handlePaginationTrait()
+            ->createIndexClassComponent()
+            ->createIndexViewComponent()
             ->createFormComponent()
-            ->createDetailComponent()
             ->createFormView()
-            ->createMainView()
+            ->createDetailComponent()
             ->createDetailView();
     }
     /**
@@ -82,35 +96,21 @@ abstract class Generator implements GeneratorContract
      */
     protected function handlePaginationTrait(): Generator
     {
-        $destinationPath = $this->mainFolderPath . '/PaginationTrait.php';
+        $destinationPath = app_path('/Http/Livewire/PaginationTrait.php');
 
         $content = File::get($this->stubsPath . '/../pagination.stub');
 
-        return $this->createFile($destinationPath, $content, $warnFileExists = false, $this->mainFolderPath);
+        return $this->createFile($destinationPath, $content, $warnFileExists = false, app_path('/Http/Livewire'));
     }
     /**
      * Handle creating the view.
      *
      * @return Generator
      */
-    protected function createMainView(): Generator
+    protected function createIndexClassComponent(): Generator
     {
-        $kebabName = Str::kebab($this->componentName);
-        $destinationPath = "{$this->viewsPath}/{$kebabName}.blade.php";
-
-        $content = $this->parseContent(File::get($this->stubsPath . '/main.stub.'));
-
-        return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->viewsPath);
-    }
-    /**
-     * Handle creating the view.
-     *
-     * @return Generator
-     */
-    protected function createMainComponent(): Generator
-    {
-        $destinationPath = "{$this->mainFolderPath}/{$this->componentName}.php";
-        $content = $this->parseContent(File::get($this->stubsPath . '/classes/main.stub.'));
+        $destinationPath = "{$this->mainFolderPath}/{$this->modelName}Index.php";
+        $content = $this->parseContent(File::get($this->stubsPath . '/classes/main.stub'));
 
         return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->mainFolderPath);
     }
@@ -119,11 +119,11 @@ abstract class Generator implements GeneratorContract
      *
      * @return Generator
      */
-    protected function createFormView(): Generator
+    protected function createIndexViewComponent(): Generator
     {
-        $kebabName = Str::kebab($this->componentName);
-        $destinationPath = "{$this->viewsPath}/{$kebabName}-form.blade.php";
-        $content = $this->parseContent(File::get($this->stubsPath . '/form.stub'));
+        $destinationPath = "{$this->viewsPath}/{$this->model_name_as_kebab}-index.blade.php";
+
+        $content = $this->parseContent(File::get($this->stubsPath . '/views/main.stub'));
 
         return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->viewsPath);
     }
@@ -134,8 +134,9 @@ abstract class Generator implements GeneratorContract
      */
     protected function createFormComponent(): Generator
     {
-        $destinationPath = "{$this->mainFolderPath}/{$this->componentName}Form.php";
-        $content = $this->parseContent(File::get($this->stubsPath . '/classes/form.stub.'));
+
+        $destinationPath = "{$this->mainFolderPath}/{$this->modelName}Form.php";
+        $content = $this->parseContent(File::get($this->stubsPath . '/classes/form.stub'));
 
         return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->mainFolderPath);
     }
@@ -144,11 +145,11 @@ abstract class Generator implements GeneratorContract
      *
      * @return Generator
      */
-    protected function createDetailView(): Generator
+    protected function createFormView(): Generator
     {
-        $kebabName = Str::kebab($this->componentName);
-        $destinationPath = "{$this->viewsPath}/{$kebabName}-detail.blade.php";
-        $content = $this->parseContent(File::get($this->stubsPath . '/detail.stub.'));
+        $destinationPath = "{$this->viewsPath}/{$this->model_name_as_kebab}-form.blade.php";
+
+        $content = $this->parseContent(File::get($this->stubsPath . '/views/form.stub'));
 
         return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->viewsPath);
     }
@@ -159,10 +160,24 @@ abstract class Generator implements GeneratorContract
      */
     protected function createDetailComponent(): Generator
     {
-        $destinationPath = "{$this->mainFolderPath}/{$this->componentName}Detail.php";
-        $content = $this->parseContent(File::get($this->stubsPath . '/classes/detail.stub.'));
+
+        $destinationPath = "{$this->mainFolderPath}/{$this->modelName}Detail.php";
+        $content = $this->parseContent(File::get($this->stubsPath . '/classes/detail.stub'));
 
         return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->mainFolderPath);
+    }
+    /**
+     * Handle creating the view.
+     *
+     * @return Generator
+     */
+    protected function createDetailView(): Generator
+    {
+        $destinationPath = "{$this->viewsPath}/{$this->model_name_as_kebab}-detail.blade.php";
+
+        $content = $this->parseContent(File::get($this->stubsPath . '/views/detail.stub'));
+
+        return $this->createFile($destinationPath, $content, $warnFileExists = true, $this->viewsPath);
     }
     /**
      * Handle Icons stub.
@@ -218,13 +233,13 @@ abstract class Generator implements GeneratorContract
 
     protected function parseContent($content)
     {
-        $content = str_replace('[component-name]', $this->componentName, $content);
-        $content = str_replace('[component-name-kebab]', Str::kebab($this->componentName), $content);
-        $content = str_replace('[model-plural]', Str::of($this->modelName)->studly()->plural(), $content);
-        $content = str_replace('[model-snake-plural]', Str::of($this->modelName)->snake()->plural(), $content);
+        // $content = str_replace('[component-name]', $this->componentName, $content);
+        // $content = str_replace('[component-name-kebab]', Str::kebab($this->componentName), $content);
         $content = str_replace('[model]', $this->modelName, $content);
-        $content = str_replace('[model-snake]', Str::snake($this->modelName), $content);
         $content = str_replace('[models-path]', $this->modelsDir, $content);
+        $content = str_replace('[model-plural]', $this->getModelNameAsplural(), $content);
+        $content = str_replace('[model-snake]', $this->getModelNameAsSnake(), $content);
+        $content = str_replace('[model-snake-plural]', $this->getModelNameAsPluralSnake(), $content);
 
         return $content;
     }
@@ -232,5 +247,25 @@ abstract class Generator implements GeneratorContract
     protected function setStubsPath(string $path = null)
     {
         $this->stubsPath = $path ?: __DIR__ . '/../../stubs/' . Str::snake(class_basename($this));
+    }
+
+    public function getModelName()
+    {
+        return $this->modelName;
+    }
+
+    public function getModelNameAsplural()
+    {
+        return $this->model_name_as_plural;
+    }
+
+    public function getModelNameAsSnake()
+    {
+        return $this->model_name_as_snake;
+    }
+
+    public function getModelNameAsPluralSnake()
+    {
+        return $this->model_name_as_plural_snake;
     }
 }

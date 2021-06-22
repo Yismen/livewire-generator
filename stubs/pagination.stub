@@ -8,7 +8,10 @@ use Livewire\WithPagination;
 trait PaginationTrait
 {
     use WithPagination;
-
+    /**
+    * Indicates livewire to render the bootstrap view. 
+    * Comment / Delete if you are using tailwind.
+    */
     protected $paginationTheme = 'bootstrap';
     /**
      * Field to sort by

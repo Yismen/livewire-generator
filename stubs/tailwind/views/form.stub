@@ -1,22 +1,16 @@
 <div class="inline-flex">
-    @if ($this->editing)
-        <x-jet-button wire:click.prevent="edit({{ $[model-snake] }})" class="bg-yellow-800 hover:bg-yellow-700 active:bg-yellow-900 focus:border-yellow-900 px-2 py-1" title="{{ __('Edit') }}">
-            @include('livewire.icons.pencil')
-        </x-jet-button>
-    @else
-        <x-jet-button wire:click.prevent="create()">
-            {{ __('Add [model]') }}  
-        </x-jet-button>
-    @endif
+    <x-jet-button wire:click.prevent="create()">
+        {{ __('Add Activitiy') }}  
+    </x-jet-button>
     
     {{-- // Create or Update Modal --}}
     <x-jet-dialog-modal wire:model="show">
         <x-slot name="title">
             <div class="flex justify-between">
-                @if ($this->editing)
-                    {{ __('Edit [model]') }} {{ $[model-snake]->name }}
+                @if ($editing)
+                    {{ __('Edit Activitiy') }} {{ $[model-snake]->name }}
                 @else
-                    {{ __('Add [model]') }}
+                    {{ __('Add Activitiy') }}
                 @endif 
                 <button wire:click.prevent="closeModal()" class="text-gray-300 hover:text-red-600 focus:outline-none self-end">
                     <svg class="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -35,23 +29,10 @@
                     </div>
                 </div>
                 {{-- ./Row --}}
-                <div class="md:flex">
-                    <div class="md:w-1/2 px-3 mb-3">
-                        <x-jet-label>{{ __('Phone') }}</x-jet-label>
-                        <x-jet-input wire:model.debounce.500ms="fields.phone" type="text" class="w-full"></x-jet-input>
-                        <x-jet-input-error for="fields.phone"></x-jet-input-error>
-                    </div>
-                    <div class="md:w-1/2 px-3 mb-3">
-                        <x-jet-label>{{ __('Email') }}</x-jet-label>
-                        <x-jet-input wire:model.debounce.500ms="fields.email" type="email" class="w-full"></x-jet-input>
-                        <x-jet-input-error for="fields.email"></x-jet-input-error>
-                    </div>
-                </div>
-                {{-- ./Row --}}
             </div>
         </x-slot>
         <x-slot name="footer">
-            @if ($this->editing)
+            @if ($editing)
                 <x-jet-button wire:click.prevent="update()" class="bg-green-800 hover:bg-green-700 active:bg-green-900 focus:border-green-900 px-2 py-1">
                     {{ __('Update') }}
                 </x-jet-button>
@@ -64,13 +45,13 @@
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
             {{-- //Delete Button. Uncomment to enable deleting models --}}
-            @if ($this->editing)
+            {{-- @if ($editing)
                 <div class="flex mt-4"> 
                     <x-jet-danger-button class="mr-1" wire:click.prevent="prepareDelete({{ $[model-snake] }})">
                         {{ __('Delete') }}
                     </x-jet-danger-button>
                 </div>
-            @endif
+            @endif --}}
         </x-slot>
     </x-jet-dialog-modal>
 

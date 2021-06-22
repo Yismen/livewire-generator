@@ -34,7 +34,10 @@ class TestCase extends TestbenchTestCase
     {
         parent::tearDown();
 
-        $this->deleteTempFiles();
+        // Remove all files to assure tests are working properly
+        $this->deleteFilesRecursevely($this->viewsDirectory . '/icons/');
+        $this->deleteFilesRecursevely($this->viewsDirectory);
+        $this->deleteFilesRecursevely($this->classesDirectory);
     }
 
     /**
@@ -49,41 +52,23 @@ class TestCase extends TestbenchTestCase
             LivewireGeneratorServiceProvider::class
         ];
     }
-
     /**
-     * Delete all fake log files int the test temporary directory.
+     * Removes all files on a given directory.
+     *
+     * @param string $dir
+     * @return boolean
      */
-    private function deleteTempFiles(): void
+    protected function deleteFilesRecursevely(string $dir): bool
     {
-        // Remove all files in views directory
-        foreach (glob($this->viewsDirectory . '/*') as $file) {
-            if (is_file($file)) {
-                unlink($file);
+        if (is_dir($dir)) {
+            $files = array_diff(scandir($dir), array('.', '..'));
+
+            foreach ($files as $file) {
+                (is_dir("$dir/$file")) ? $this->deleteFilesRecursevely("$dir/$file") : unlink("$dir/$file");
             }
+            return rmdir($dir);
         }
-        // Remove all files on incones directory
-        foreach (glob($this->viewsDirectory . '/icons/*') as $file) {
-            if (is_file($file)) {
-                unlink($file);
-            }
-        }
-        // Remove icon directory
-        if (is_dir($this->viewsDirectory . '/icons')) {
-            rmdir($this->viewsDirectory . '/icons');
-        };
-        // Remove views directory
-        if (is_dir($this->viewsDirectory)) {
-            rmdir($this->viewsDirectory);
-        };
-        // Remove all files in Livewire directory
-        foreach (glob($this->classesDirectory . '/*') as $file) {
-            if (is_file($file)) {
-                unlink($file);
-            }
-        }
-        // Remove Livewire directory
-        if (is_dir($this->classesDirectory)) {
-            rmdir($this->classesDirectory);
-        }
+
+        return false;
     }
 }

@@ -15,7 +15,6 @@ class LivewireCrud extends Command
      * @var string
      */
     protected $signature = 'make:livewire-crud
-        {name? : Component Name}
         {model? : Model}
         {--force : Override existing files!}
         {--preset=tailwind : Frontend scafold preset!}
@@ -27,12 +26,6 @@ class LivewireCrud extends Command
      * @var string
      */
     protected $description = 'Create a livewire component paginated';
-    /**
-     * The name of the component
-     *
-     * @var string
-     */
-    protected $componentName;
     /**
      * The name of the model to be used
      *
@@ -66,7 +59,6 @@ class LivewireCrud extends Command
         $this->handleArguments();
 
         $generator = new $this->generators[$this->option('preset')](
-            $this->componentName,
             $this->modelName,
             $this->option('force'),
             $this->option('models-dir'),
@@ -89,16 +81,7 @@ class LivewireCrud extends Command
      */
     protected function handleArguments()
     {
-        $this->componentName = Str::studly($this->argument('name'));
         $this->modelName = Str::studly($this->argument('model'));
-
-        if (!$this->argument('name')) {
-            $name = $this->ask("Enter Component Name");
-            if (!$name || strlen($name) < 3) {
-                throw new  MissingNameException("Please enter a component name with at leat 3 characters!");
-            }
-            $this->componentName = Str::studly($name);
-        }
 
         if (!$this->argument('model')) {
             $model = $this->ask("Enter Model Name");

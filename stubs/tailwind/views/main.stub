@@ -5,7 +5,8 @@
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight p-3">
                     {{ __('[model-plural]') }}
                 </h2>
-                @livewire('[component-name-kebab]-form')
+                @livewire('[model-snake]-form')
+                @livewire('[model-snake]-detail')
             </div>
             <div class="flex w-full lg:w-1/2 justify-between mt-3 lg:ml-2 lg:mt-0">
                 <select wire:model="amount" class="border-gray-300 py-2 rounded text-grey-darker">
@@ -37,14 +38,14 @@
         <table class="w-full table-auto">
             <thead>
                 <tr>
-                    <th class="border-b border-black font-semibold px-5 py-3 text-left text-xs tracking-wider uppercase">
+                    <th class="font-medium text-gray-500 border-b border-black font-semibold px-5 py-3 text-left text-xs tracking-wider uppercase">
                         <a href="#" wire:click.prevent="sortBy('name')" class="flex flex-row justify-between items-center">
                             {{ __('Name') }} 
                             <span>{{ $this->getIcon('name') }}</span>
                         </a>
                     </th>
 
-                    <th class="border-b border-black font-semibold px-5 py-3 text-left text-xs tracking-wider uppercase">                    
+                    <th class="font-medium text-gray-500 border-b border-black font-semibold px-5 py-3 text-left text-xs tracking-wider uppercase">                    
                         {{__('Actions')}}
                     </th>
                 </tr>
@@ -56,8 +57,20 @@
                         
                         <td class="px-4 py-1 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
                             <div class="inline-block whitespace-no-wrap">
-                                @livewire('[component-name-kebab]-form', ['[model-snake]' => $[model-snake]], key("edit-" . $[model-snake]->id))
-                                @livewire('[component-name-kebab]-detail', ['[model-snake]' => $[model-snake]], key("detail-" . $[model-snake]->id))
+                                <x-jet-button 
+                                    wire:click.prevent="edit({{ $[model-snake]->id }})" 
+                                    class="bg-yellow-800 hover:bg-yellow-700 active:bg-yellow-900 focus:border-yellow-900 px-2 py-1" 
+                                    title="{{ __('Edit') }}"
+                                >
+                                    @include('livewire.icons.pencil')
+                                </x-jet-button>
+
+                                <x-jet-secondary-button 
+                                    wire:click.prevent="show({{ $[model-snake]->id }})" 
+                                    title="{{ __('Details') }}"
+                                >
+                                    @include('livewire.icons.eye')
+                                </x-jet-secondary-button>
                             </div>
                         </td>
                     </tr>
