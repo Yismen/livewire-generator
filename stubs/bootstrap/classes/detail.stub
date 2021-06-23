@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use App\[model];
 use Livewire\Component;
 
-class [component-name]Detail extends Component
+class [model]Detail extends Component
 {
     public bool $show = false;
 
@@ -15,7 +15,7 @@ class [component-name]Detail extends Component
 
     public function render()
     {
-        return view('livewire.[component-name-kebab]-detail');
+        return view('livewire.[model-snake].[model-snake]-detail');
     }
     /**
      * Show model details.

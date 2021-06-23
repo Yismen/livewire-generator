@@ -36,7 +36,7 @@
                         </div>
                     </div>
         
-                    <div class="col-12 col-lg-4 d-flex justify-content-between">
+                    {{-- <div class="col-12 col-lg-4 d-flex justify-content-between">
                         <div class="dropdown open w-50">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -48,11 +48,11 @@
                                 <a class="dropdown-item text-success" href="{{ route('[model-snake].download', ['status' => 'actives']) }}">{{ __('Actives') }}</a>
                                 <a class="dropdown-item text-danger" href="{{ route('[model-snake].download', ['status' => 'inactives']) }}">{{ __('Inactives') }}</a>
                             </div>
-                        </div>
+                        </div> --}}
                     
                         <div class="">
-                            @livewire('[component-name-kebab]-form')
-                            @livewire('[component-name-kebab]-detail')
+                            @livewire('[model-snake].[model-snake]-form')
+                            @livewire('[model-snake].[model-snake]-detail')
                         </div>
                     </div>
                 </div>
@@ -68,9 +68,9 @@
                     <thead>
                         <tr>
                             <th>
-                                <a href="#" wire:click.prevent="sortBy('hire_date')" class="flex flex-row justify-between items-center">
-                                    {{ __('Hire Date') }} 
-                                    <span>{{ $this->getIcon('hire_date') }}</span>
+                                <a href="#" wire:click.prevent="sortBy('name')" class="flex flex-row justify-between items-center">
+                                    {{ __('Name') }} 
+                                    <span>{{ $this->getIcon('name') }}</span>
                                 </a>
                             </th>
                             <th>Actions</th>
@@ -79,15 +79,20 @@
                     <tbody>
                         @foreach ($[model-snake-plural] as $[model-snake])
                             <tr>
-                                <td>{{ $[model-snake]->hire_date->format('M-d-Y') }}</td>
+                                <td>{{ $[model-snake]->name }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-warning btn-sm" wire:click.prevent="edit({{ $[model-snake]->id }})">
-                                        @include('livewire.icons.pencil') 
-                                        {{ __('Edit') }}
+                                    <a href="#" class="btn btn-warning btn-sm" 
+                                        wire:click.prevent="edit({{ $[model-snake]->id }})"
+                                        title="{{ __('Edit') }}"
+                                    >
+                                        @include('livewire.icons.pencil')                                         
                                     </a>
-                                    <a href="#" class="btn btn-danger btn-sm" wire:click.prevent="delete({{ $[model-snake]->id }})">
-                                        @include('livewire.icons.trash') 
-                                        {{ __('Delete') }}
+                                    <a href="#" 
+                                        class="btn btn-default btn-sm" 
+                                        wire:click.prevent="detail({{ $[model-snake]->id }})"
+                                        title="{{ __('Details') }}"
+                                    >
+                                        @include('livewire.icons.eye')                                         
                                     </a>                                    
                                 </td>
                             </tr>

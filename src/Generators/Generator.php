@@ -111,8 +111,6 @@ abstract class Generator implements GeneratorContract
 
     protected function parseContent($content)
     {
-        // $content = str_replace('[component-name]', $this->componentName, $content);
-        // $content = str_replace('[component-name-kebab]', Str::kebab($this->componentName), $content);
         $content = str_replace('[model]', $this->modelName, $content);
         $content = str_replace('[models-path]', $this->modelsDir, $content);
         $content = str_replace('[model-plural]', $this->getModelNameAsplural(), $content);

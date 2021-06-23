@@ -75,7 +75,7 @@
                     </button>
                 </div>
                 <div class="modal-body text-danger">
-                    {{ _('You are about to delete this record from the database, which CAN NOT be reverterd. Are you sure you want proceed?') }} {{ $fields['full_name'] ?? '' }}
+                    {{ _('You are about to delete this record from the database, which CAN NOT be reverterd. Are you sure you want proceed?') }} {{ $fields['name'] ?? '' }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cancel') }}</button>
