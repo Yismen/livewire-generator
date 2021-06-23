@@ -20,7 +20,7 @@ class LivewireCrudPaginatedTest extends TestCase
     public function it_copies_the_icons_stub()
     {
         $this->artisan('make:livewire-crud', ['model' => 'Test']);
-
+        // Icons
         $this->assertDirectoryExists($this->viewsDirectory . '/icons');
         $this->assertFileExists($this->viewsDirectory . '/icons/asc.blade.php');
         $this->assertFileExists($this->viewsDirectory . '/icons/default.blade.php');
@@ -28,43 +28,19 @@ class LivewireCrudPaginatedTest extends TestCase
         $this->assertFileExists($this->viewsDirectory . '/icons/eye.blade.php');
         $this->assertFileExists($this->viewsDirectory . '/icons/pencil.blade.php');
         $this->assertFileExists($this->viewsDirectory . '/icons/trash.blade.php');
-    }
-
-    /** @test */
-    public function it_creates_the_trait_file()
-    {
-        $this->artisan('make:livewire-crud', ['model' => 'Test']);
-
+        // Pagination Trait
         $this->assertFileExists($this->classesDirectory . '/PaginationTrait.php');
-    }
-
-    /** @test */
-    public function it_creates_the_index_files()
-    {
-        $this->artisan('make:livewire-crud', ['model' => 'test']);
-
+        // Index Class
         $this->assertFileExists($this->classesDirectory . '/Test/TestIndex.php');
-
+        // Index View
         $this->assertFileExists($this->viewsDirectory . '/test/test-index.blade.php');
-    }
-
-    /** @test */
-    public function it_creates_the_form_files()
-    {
-        $this->artisan('make:livewire-crud', ['model' => 'test']);
-
+        // Form Class
         $this->assertFileExists($this->classesDirectory . '/Test/TestForm.php');
-
+        // Form View
         $this->assertFileExists($this->viewsDirectory . '/test/test-form.blade.php');
-    }
-
-    /** @test */
-    public function it_creates_the_detail_files()
-    {
-        $this->artisan('make:livewire-crud', ['model' => 'test']);
-
+        // Detal Class
         $this->assertFileExists($this->classesDirectory . '/Test/TestDetail.php');
-
+        // Detail View
         $this->assertFileExists($this->viewsDirectory . '/test/test-detail.blade.php');
     }
 }

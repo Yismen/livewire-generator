@@ -30,7 +30,7 @@ class [model]Index extends Component
 
         $this->defaultSortField = 'first_name';
 
-        return view('livewire.[model-snake]-index', [
+        return view('livewire.[model-snake].[model-snake]-index', [
             '[model-snake-plural]' => $this->getPaginatedData(
                 $query = [model]::query(),
                 $searchableFields =  [

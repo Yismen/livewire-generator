@@ -67,7 +67,7 @@ class [model]ComponentForm extends Component
      */
     public function render()
     {
-        return view('livewire.[model-snake]-form');
+        return view('livewire.[model-snake].[model-snake]-form');
     }
     /**
      * Display the create form.
