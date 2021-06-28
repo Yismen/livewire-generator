@@ -3,7 +3,6 @@
 namespace Dainsys\LivewireGenerator\Commands;
 
 use Dainsys\LivewireGenerator\Exceptions\MissingModelException;
-use Dainsys\LivewireGenerator\Exceptions\MissingNameException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
@@ -18,7 +17,7 @@ class LivewireCrud extends Command
         {model? : Model}
         {--force : Override existing files!}
         {--preset=tailwind : Frontend scafold preset!}
-        {--models-dir=App\Models}';
+        {--models-dir=App\Models : Here you can specify your models directory}';
 
     /**
      * The console command description.
@@ -66,12 +65,16 @@ class LivewireCrud extends Command
 
         $generator->handle();
 
-        foreach ($generator->warns as $warn) {
-            $this->warn($warn);
+        foreach ($generator->warns as $value) {
+            foreach ($value as $message) {
+                $this->warn($message);
+            }
         }
 
-        foreach ($generator->infos as $info) {
-            $this->info($info);
+        foreach ($generator->infos as $value) {
+            foreach ($value as $message) {
+                $this->info($message);
+            }
         }
     }
     /**

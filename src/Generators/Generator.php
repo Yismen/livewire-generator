@@ -2,7 +2,6 @@
 
 namespace Dainsys\LivewireGenerator\Generators;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 abstract class Generator implements GeneratorContract
@@ -91,33 +90,12 @@ abstract class Generator implements GeneratorContract
     public function handle()
     {
         foreach ($this->creators as $creator) {
-            $messages = (new $creator($this))
+            $creator = (new $creator($this))
                 ->createFile();
 
-            $this->warns = $messages->warns;
-            $this->infos = $messages->infos;
+            $this->warns[] = $creator->warns;
+            $this->infos[] = $creator->infos;
         }
-    }
-
-    protected function warn($message)
-    {
-        $this->warns[] = $message;
-    }
-
-    protected function info($message)
-    {
-        $this->infos[] = $message;
-    }
-
-    protected function parseContent($content)
-    {
-        $content = str_replace('[model]', $this->modelName, $content);
-        $content = str_replace('[models-path]', $this->modelsDir, $content);
-        $content = str_replace('[model-plural]', $this->getModelNameAsplural(), $content);
-        $content = str_replace('[model-snake]', $this->getModelNameAsSnake(), $content);
-        $content = str_replace('[model-snake-plural]', $this->getModelNameAsPluralSnake(), $content);
-
-        return $content;
     }
 
     public function getModelName()
@@ -147,7 +125,7 @@ abstract class Generator implements GeneratorContract
 
     public function getModelNameAsKebab()
     {
-        return $this->model_name_as_snake;
+        return Str::of($this->model_name_as_snake)->camel()->kebab();
     }
 
     public function getModelNameAsPluralSnake()

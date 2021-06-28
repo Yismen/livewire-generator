@@ -45,12 +45,9 @@ abstract class BaseFileCreator implements FileCreatorContract
         }
 
         File::ensureDirectoryExists($this->main_destination_folder, 0755, true);
+        $file = File::put($this->destination_file_name, $this->content);
 
-        File::put($this->destination_file_name, $this->content);
-
-        if ($this->warn_file_exists) {
-            $this->infos[] = "Created file {$this->destination_file_name}";
-        }
+        $this->infos[] = "Created file {$this->destination_file_name}";
 
         return $this;
     }
@@ -62,6 +59,7 @@ abstract class BaseFileCreator implements FileCreatorContract
     protected function parseContent($content)
     {
         $content = str_replace('[model-snake-plural]', $this->generator->getModelNameAsPluralSnake(), $content);
+        $content = str_replace('[model-name-kebab]', $this->generator->getModelNameAsKebab(), $content);
         $content = str_replace('[model-plural]', $this->generator->getModelNameAsplural(), $content);
         $content = str_replace('[models-path]', $this->generator->getModelsDir(), $content);
         $content = str_replace('[model-snake]', $this->generator->getModelNameAsSnake(), $content);

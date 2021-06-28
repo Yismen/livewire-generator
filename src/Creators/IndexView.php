@@ -2,11 +2,11 @@
 
 namespace Dainsys\LivewireGenerator\Creators;
 
-use Dainsys\LivewireGenerator\Generators\Generator;
+use Illuminate\Support\Str;
 
 class IndexView extends BaseFileCreator
 {
-    protected string $stub_path = '/views/main.stub';
+    protected string $stub_path = '/index.blade.php';
 
     protected string $file_name_sufix = '-index.blade.php';
 
@@ -22,6 +22,6 @@ class IndexView extends BaseFileCreator
     protected function getMainDestinationFolder()
     {
         return resource_path('views/livewire/') .
-            $this->file_model_name;
+            Str::of($this->file_model_name)->camel()->kebab();
     }
 }

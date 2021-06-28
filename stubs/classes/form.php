@@ -3,52 +3,55 @@
 namespace App\Http\Livewire\[model];
 
 use [models-path]\[model];
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class [model]ComponentForm extends Component
+class [model]Form extends Component
 {
     use AuthorizesRequests;
-    /**
-     * Display modal form
-     */
-    public bool $show = false;
-    /**
-     * Computed property
-     */
-    public bool $editing = false;
-    /**
-     * Control delete modal
-     */
-    public bool $deleteModal = false;
-    /**
-     * Control is editing status
-     */
-    public [model] $[model-snake];
-    /**
-     * Array of fields to serve as model
-     */
-    public array $fields = [
-        'name' => '',
-    ];
-    /**
-     * Customize validation error attributes
-     */
-    protected array $validationAttributes = [
-        'fields.name' => 'name',
-    ];
-
-    protected $rules = [
-        'fields.name' => 'required|min:2',
-        // Add more as needed
-    ];
     /**
      * Add Event Listeners
      * 
      * @var array
      */
     protected $listeners = [
+        'wantsCreate[model]' => 'create',
         'wantsEdit[model]' => 'edit',
+        'wantsDelete[model]' => 'delete',
+    ];
+    /**
+     * Display modal form
+     */
+    public bool $show = false;
+    /**
+     * Control delete modal
+     */
+    public bool $showDelete = false;
+    /**
+     * Control is editing status
+     */
+    public bool $is_editing = false;
+    /**
+     * Model Variable
+     */
+    public [model] $[model-snake];
+    /**
+     * Array of fields to serve as model
+     */
+    public array $fields = [
+        'name',
+    ];
+    /**
+     * Validation Rules
+     */
+    protected array $rules = [
+        'fields.name' => 'required|min:3',
+    ];
+    /**
+     * Customize validation error attributes
+     */
+    protected array $validationAttributes = [
+        'fields.name' => 'name',
     ];
     /**
      * Component constructor method
@@ -67,7 +70,7 @@ class [model]ComponentForm extends Component
      */
     public function render()
     {
-        return view('livewire.[model-snake].[model-snake]-form');
+        return view('livewire.[model-name-kebab].[model-name-kebab]-form');
     }
     /**
      * Display the create form.
@@ -79,8 +82,9 @@ class [model]ComponentForm extends Component
         $this->authorize('create', [model]::class);
 
         $this->resetValidation();
-        $this->show = true;
-        $this->reset(['fields', 'editing', 'deleteModal']);
+        $this->reset(['fields', 'is_editing', 'showDelete']);
+
+        $this->openModal('open_[model-snake]_modal');
     }
     /**
      * Store the new model.
@@ -90,14 +94,13 @@ class [model]ComponentForm extends Component
     public function store()
     {
         $this->authorize('create', [model]::class);
-
         $this->validate();
 
-        $[model-snake] = [model]::create($this->fields);
+        [model]::create($this->fields);
 
         $this->emit('[model-snake]Saved');
 
-        $this->closeModal();
+        $this->closeModal('close_[model-snake]_modal');
     }
     /**
      * Display the edit form.
@@ -109,13 +112,11 @@ class [model]ComponentForm extends Component
     {
         $this->authorize('update', $[model-snake]);
         $this->resetValidation();
-        $this->reset(['fields', 'editing', 'deleteModal']);
-        
-        $this->fill([
-            'editing' => true,
-            'show' => true,
-            'fields' => $[model-snake]->toArray(),
-        ]);
+        $this->reset(['fields', 'is_editing', 'showDelete']);
+
+        $this->fill(['is_editing' => true, 'fields' => $[model-snake]->toArray()]);
+
+        $this->openModal('open_[model-snake]_modal');
     }
     /**
      * Update the current model.
@@ -124,16 +125,16 @@ class [model]ComponentForm extends Component
      */
     public function update()
     {
-        $this->authorize('update', $[model-snake]);
         $[model-snake] = [model]::findOrFail($this->fields['id']);
-
+        $this->authorize('update', $[model-snake]);
         $this->validate();
+
 
         $[model-snake]->update($this->fields);
 
         $this->emit('[model-snake]Saved');
 
-        $this->closeModal();
+        $this->closeModal('close_[model-snake]_modal');
     }
     /**
      * Reset validation when variables are updated
@@ -154,9 +155,10 @@ class [model]ComponentForm extends Component
     public function prepareDelete([model] $[model-snake])
     {
         $this->authorize('delete', $[model-snake]);
+        $this->reset(['showDelete', 'show']);
 
-        $this->reset(['fields', 'editing', 'deleteModal']);
-        $this->deleteModal = true;
+        $this->showDelete = true;
+        $this->openModal('open_delete_employee_photo_modal');
     }
     /**
      * Delete current model.
@@ -164,23 +166,43 @@ class [model]ComponentForm extends Component
      * @param [model] $[model-snake]
      * @return void
      */
-    public function delete([model] $[model-snake])
+    public function delete()
     {
+        $[model-snake] = [model]::findOrFail($this->fields['id']);
         $this->authorize('delete', $[model-snake]);
-
         $[model-snake]->delete();
 
         $this->emit('[model-snake]Saved');
-        $this->closeModal();
+
+        $this->closeModal('close_delete_[model-snake]_modal');
+        $this->closeModal('close_[model-snake]_modal');
+    }
+    /**
+     * P
+     *
+     * @param string $browser_event_name
+     * @return void
+     */ 
+    public function openModal(string $browser_event_name = null)
+    {
+        $this->show = true;
+
+        if ($browser_event_name) {
+            $this->dispatchBrowserEvent($browser_event_name);
+        }
     }
     /**
      * Close all modals
      *
      * @return void
      */
-    public function closeModal()
+    public function closeModal(string $browser_event_name = null)
     {
         $this->resetValidation();
-        $this->reset(['fields', 'editing', 'deleteModal', 'show']);
+        $this->reset(['fields', 'is_editing', 'showDelete', 'show']);
+
+        if ($browser_event_name) {
+            $this->dispatchBrowserEvent($browser_event_name);
+        }
     }
 }

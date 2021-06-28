@@ -2,7 +2,6 @@
 
 namespace Dainsys\LivewireGenerator;
 
-use Dainsys\LivewireGenerator\Commands\LivewireCrud;
 use Illuminate\Support\ServiceProvider;
 
 class LivewireGeneratorServiceProvider extends ServiceProvider
@@ -11,7 +10,8 @@ class LivewireGeneratorServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                LivewireCrud::class
+                \Dainsys\LivewireGenerator\Commands\LivewireCrud::class,
+                \Dainsys\LivewireGenerator\Commands\MakeLivewireCrud::class,
             ]);
         }
 

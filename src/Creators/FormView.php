@@ -2,11 +2,11 @@
 
 namespace Dainsys\LivewireGenerator\Creators;
 
-use Dainsys\LivewireGenerator\Generators\Generator;
+use Illuminate\Support\Str;
 
 class FormView extends BaseFileCreator
 {
-    protected string $stub_path = '/views/form.stub';
+    protected string $stub_path = '/form.blade.php';
 
     protected string $file_name_sufix = '-form.blade.php';
 
@@ -22,6 +22,6 @@ class FormView extends BaseFileCreator
     protected function getMainDestinationFolder()
     {
         return resource_path('views/livewire/') .
-            $this->file_model_name;
+            Str::of($this->file_model_name)->camel()->kebab();
     }
 }

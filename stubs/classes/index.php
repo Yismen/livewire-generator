@@ -5,12 +5,12 @@ namespace App\Http\Livewire\[model];
 use App\Http\Livewire\PaginationTrait;
 use [models-path]\[model];
 use Livewire\Component;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class [model]Index extends Component
 {
     use PaginationTrait;
-
-    public $[model-snake];
+    use AuthorizesRequests;
     /**
      * Event Listeners
      *
@@ -24,9 +24,11 @@ class [model]Index extends Component
      */
     public function render()
     {
-        $this->defaultSortField = 'name';
+        $this->authorize('viewAny', [model]::class);
 
-        return view('livewire.[model-snake].[model-snake]-index', [
+        // $this->defaultSortField = 'first_name'; 
+
+        return view('livewire.[model-name-kebab].[model-name-kebab]-index', [
             '[model-snake-plural]' => $this->getPaginatedData(
                 $query = [model]::query(),
                 $searchableFields =  [
@@ -38,21 +40,21 @@ class [model]Index extends Component
 
     public function create()
     {
-        $this->emitTo('[model-snake].[model-snake]-index-form', 'wantsCreate[model]');
+        $this->emit('wantsCreate[model]');
     }
 
     public function edit([model] $[model-snake])
     {
-        $this->emitTo('[model-snake].[model-snake]-index-form', 'wantsEdit[model]', $[model-snake]);
+        $this->emit('wantsEdit[model]', $[model-snake]);
     }
 
     public function delete([model] $[model-snake])
     {
-        $this->emitTo('[model-snake].[model-snake]-index-form', 'wantsDelete[model]', $[model-snake]);
+        $this->emit('wantsDelete[model]', $[model-snake]);
     }
 
-    public function detail([model] $[model-snake])
+    public function show([model] $[model-snake])
     {
-        $this->emitTo('[model-snake].[model-snake]-index-detail', 'wantsDetail[model]', $[model-snake]);
+        $this->emit('wantsShow[model]', $[model-snake]);
     }
 }

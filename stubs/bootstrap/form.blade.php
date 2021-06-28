@@ -7,43 +7,36 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header d-flex justify-content-between">
-                    <h5 class="modal-title">{{ $is_editing ? __('Edit') : __('Create') }} [model]</h5>
+                    <h5 class="modal-title">
+                        {{ $is_editing ? __('Edit') : __('Create') }} {{ __('[model]') }} {{ $fields['name'] ?? '' }}
+                    </h5>
                     <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close" title="{{ __('Close') }}">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <form 
                     @if ($is_editing)
-                        <form wire:submit.prevent="update">                        
+                        wire:submit.prevent="update" wire:key="update_form"   
                     @else
-                        <form wire:submit.prevent="store">
+                        wire:submit.prevent="store" wire:key="store_form"
                     @endif
-                
+                >                
                     <div class="modal-body">
                         <div class="row">
+                            {{-- Name --}}
                             <div class="col-md-6">                            
                                 <div class="form-group">
-                                    <label for="first_name">{{ __('First Name') }}</label>
+                                    <label for="name">{{ __('Name') }}</label>
                                     <input type="text"
-                                    class="form-control @error('fields.first_name') is-invalid @enderror" wire:model.debounce.350ms="fields.first_name" id="first_name" aria-describedby="first_name" placeholder="">
-                                    @error('fields.first_name')
+                                    class="form-control @error('fields.name') is-invalid @enderror" wire:model.debounce.350ms="fields.name" id="name" aria-describedby="name" placeholder="">
+                                    @error('fields.name')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>                          
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="last_name">Last Name</label>
-                                    <input type="text"
-                                    class="form-control @error('fields.last_name') is-invalid @enderror" wire:model.debounce.350ms="fields.last_name" id="last_name" aria-describedby="last_name" placeholder="">
-                                    @error('fields.last_name')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>                          
-                                    @enderror
-                                </div>
-                            </div>
+                            
                         </div>
                         {{-- /Modal Body --}}
                     </div>
@@ -60,6 +53,14 @@
                         @endif
                     </div>
                 </form>
+                {{-- //Delete Button. Uncomment to enable deleting models --}}
+                {{-- @if ($is_editing)                        
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-danger" wire:click.prevent="prepareDelete({{ $employee_photo->id }})">
+                            {{  __('Delete') }}
+                        </button> 
+                    </div>                  
+                @endif --}}
             </div>
         </div>
     </div>
@@ -69,17 +70,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-danger">{{ __('Delete') }} [model]</h5>
+                    <h5 class="modal-title text-danger">{{ __('Delete') }} {{ __('[model]') }} {{ $fields['name'] ?? '' }}</h5>
                     <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body text-danger">
-                    {{ _('You are about to delete this record from the database, which CAN NOT be reverterd. Are you sure you want proceed?') }} {{ $fields['name'] ?? '' }}
+                    {{ _('You are about to delete this record from the database, which CAN NOT be reverterd. Are you sure you want proceed?') }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cancel') }}</button>
-                    <button type="button" class="btn btn-danger" wire:click.prevent="completeDelete()">{{ __('Delete') }}</button>
+                    <button type="button" class="btn btn-danger" wire:click.prevent="delete()">{{ __('Delete') }}</button>
                 </div>
             </div>
         </div>
@@ -89,19 +90,19 @@
 @push('scripts')
 <script>
     (function() {
-        document.addEventListener('show-[model-snake]-modal-form', () => {
+        document.addEventListener('open_[model-snake]_modal', () => {
             $('#createOrUpdate[model]Modal').modal('show');
         });
         
-        document.addEventListener('close-[model-snake]-modal-form', () => {
+        document.addEventListener('close_[model-snake]_modal', () => {
             $('#createOrUpdate[model]Modal').modal('hide');
         });
 
-        document.addEventListener('show-delete-[model-snake]-modal', () => {
+        document.addEventListener('open_delete_[model-snake]_modal', () => {
             $('#delete[model]Modal').modal('show');
         });
         
-        document.addEventListener('close-delete-[model-snake]-modal', () => {
+        document.addEventListener('close_delete_[model-snake]_modal', () => {
             $('#delete[model]Modal').modal('hide');
         });
     })()
