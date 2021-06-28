@@ -22,9 +22,9 @@ class LivewireCrudPaginatedTest extends TestCase
         $this->artisan('make:livewire-crud', ['model' => 'Test']);
         // Icons
         $this->assertDirectoryExists($this->viewsDirectory . '/icons');
-        $this->assertFileExists($this->viewsDirectory . '/icons/asc.blade.php');
-        $this->assertFileExists($this->viewsDirectory . '/icons/default.blade.php');
-        $this->assertFileExists($this->viewsDirectory . '/icons/desc.blade.php');
+        // $this->assertFileExists($this->viewsDirectory . '/icons/asc.blade.php');
+        // $this->assertFileExists($this->viewsDirectory . '/icons/default.blade.php');
+        // $this->assertFileExists($this->viewsDirectory . '/icons/desc.blade.php');
         $this->assertFileExists($this->viewsDirectory . '/icons/eye.blade.php');
         $this->assertFileExists($this->viewsDirectory . '/icons/pencil.blade.php');
         $this->assertFileExists($this->viewsDirectory . '/icons/trash.blade.php');

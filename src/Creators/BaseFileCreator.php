@@ -43,9 +43,8 @@ abstract class BaseFileCreator implements FileCreatorContract
                 return $this; // Do nothing
             }
         }
-        if (File::isDirectory($this->main_destination_folder) == false) {
-            File::makeDirectory($this->main_destination_folder, 0755, true);
-        }
+
+        File::ensureDirectoryExists($this->main_destination_folder, 0755, true);
 
         File::put($this->destination_file_name, $this->content);
 
@@ -62,11 +61,11 @@ abstract class BaseFileCreator implements FileCreatorContract
 
     protected function parseContent($content)
     {
-        $content = str_replace('[model]', $this->generator->getModelName(), $content);
-        $content = str_replace('[models-path]', $this->generator->getModelsDir(), $content);
-        $content = str_replace('[model-plural]', $this->generator->getModelNameAsplural(), $content);
-        $content = str_replace('[model-snake]', $this->generator->getModelNameAsSnake(), $content);
         $content = str_replace('[model-snake-plural]', $this->generator->getModelNameAsPluralSnake(), $content);
+        $content = str_replace('[model-plural]', $this->generator->getModelNameAsplural(), $content);
+        $content = str_replace('[models-path]', $this->generator->getModelsDir(), $content);
+        $content = str_replace('[model-snake]', $this->generator->getModelNameAsSnake(), $content);
+        $content = str_replace('[model]', $this->generator->getModelName(), $content);
 
         return $content;
     }

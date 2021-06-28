@@ -9,9 +9,9 @@ trait PaginationTrait
 {
     use WithPagination;
     /**
-    * Indicates livewire to render the bootstrap view. 
-    * Comment / Delete if you are using tailwind.
-    */
+     * Indicates livewire to render the bootstrap view. 
+     * Comment / Delete if you are using tailwind.
+     */
     protected $paginationTheme = 'bootstrap';
     /**
      * Field to sort by
@@ -92,11 +92,17 @@ trait PaginationTrait
      */
     public function getIcon($field)
     {
-        if ($this->sortBy && $this->sortBy == $field) {
-            return view('livewire.icons.' . $this->sortDirection);
+        $icons = [
+            'both' => '&#x21f5;',
+            'asc' => '&#8593;',
+            'desc' => '&#8595;'
+        ];
+
+        if (!$this->sortBy || $this->sortBy !== $field) {
+            return $icons['both'];
         }
 
-        return view('livewire.icons.default');
+        return $icons[$this->sortDirection];
     }
     /**
      * Return an array of with the filter amounts
@@ -158,7 +164,8 @@ trait PaginationTrait
      */
     protected function handleSort(): object
     {
-        if (!$this->sortBy) {
+        if (!$this->sortBy || $this->sortBy == '') {
+            $this->sortBy = $this->defaultSortField;
             $this->model->orderBy($this->defaultSortField);
         } else {
             $sorts = explode('.', $this->sortBy);
