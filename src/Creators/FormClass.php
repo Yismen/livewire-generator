@@ -6,7 +6,7 @@ use Dainsys\LivewireGenerator\Generators\Generator;
 
 class FormClass extends BaseFileCreator
 {
-    protected string $stub_path = '/classes/form.stub';
+    protected string $stub_path = '/../classes/form.php';
 
     protected string $file_name_sufix = 'Form.php';
 

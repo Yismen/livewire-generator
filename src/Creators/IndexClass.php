@@ -6,7 +6,7 @@ use Dainsys\LivewireGenerator\Generators\Generator;
 
 class IndexClass extends BaseFileCreator
 {
-    protected string $stub_path = '/classes/main.stub';
+    protected string $stub_path = '/../classes/index.php';
 
     protected string $file_name_sufix = 'Index.php';
 

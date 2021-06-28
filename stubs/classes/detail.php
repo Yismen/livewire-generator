@@ -6,25 +6,19 @@ use [models-path]\[model];
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
-class [model]ComponentDetail extends Component
+class [model]Detail extends Component
 {
     use AuthorizesRequests;
 
     public bool $show = false;
-    /**
-     * Add Event Listeners
-     * 
-     * @var array
-     */
-    protected $listeners = [
-        'wantsShow[model]' => 'show'
-    ];
 
     public [model] $[model-snake];
 
+    protected $listeners = ['wantsShow[model]' => 'show'];
+
     public function render()
     {
-        return view('livewire.[model-snake].[model-snake]-detail');
+        return view('livewire.[model-name-kebab].[model-name-kebab]-detail');
     }
     /**
      * Show model show.
@@ -36,8 +30,8 @@ class [model]ComponentDetail extends Component
     {
         $this->authorize('view', $[model-snake]);
         $this->[model-snake] = $[model-snake];
-        $this->reset(['show']);
 
+        $this->dispatchBrowserEvent('open_detail_[model-snake]_modal');
         $this->show = true;
     }
     /**
@@ -47,6 +41,7 @@ class [model]ComponentDetail extends Component
      */
     public function closeModal()
     {
+        $this->dispatchBrowserEvent('close_detail_[model-snake]_modal');
         $this->reset(['show']);
     }
 }

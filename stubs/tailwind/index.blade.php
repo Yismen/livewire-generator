@@ -2,11 +2,12 @@
     <div class="bg-white max-w-7xl mx-auto shadow-md my-3">        
         <div class="border-b flex flex-col lg:flex-row items-center justify-content-between p-4 lg:p-0">
             <div class="flex items-center justify-between lg:mr-2 lg:w-1/2 w-full">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight p-3">
+                <h4 class="font-semibold text-xl text-gray-800 leading-tight p-3">
                     {{ __('[model-plural]') }}
-                </h2>
-                @livewire('[model-snake]-form')
-                @livewire('[model-snake]-detail')
+                    <span class="badge badge-info text-light">{{ $[model-snake-plural]->total() }}</span>
+                </h4>
+                @livewire('[model-name-kebab].[model-name-kebab]-form')
+                @livewire('[model-name-kebab].[model-name-kebab]-detail'))
             </div>
             <div class="flex w-full lg:w-1/2 justify-between mt-3 lg:ml-2 lg:mt-0">
                 <select wire:model="amount" class="border-gray-300 py-2 rounded text-grey-darker">
@@ -79,8 +80,10 @@
         </table>
     </div>
 
-    <div class="pb-4">
-        {{ $[model-snake-plural]->links() }}
-    </div>
+    @if ($[model-snake-plural]->hasPages())
+        <div class="pb-4">
+            {{ $[model-snake-plural]->links() }}
+        </div>
+    @endif
 
 </div>

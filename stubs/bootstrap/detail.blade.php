@@ -4,16 +4,26 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ __('Details For') }} {{ $[model-snake]->full_name ?? '' }}</h5>
+                    <h5 class="modal-title">
+                        {{ __('Details For') }} {{  __('[model]') }} {{ $[model-snake]->name ?? '' }}
+                    </h5>
                     <button type="button" class="close" wire:click.prevent="closeModal" aria-label="Close">
                         <span>&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    {{ $[model-snake] }}
+                <div class="modal-body p-0">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th class="col-4">{{ __('Name') }}</th>
+                                <td>{{ $[model-snake]->name ?? '' }}</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click.prevent="closeModal">Close</button>
+                    <button type="button" class="btn btn-secondary" wire:click.prevent="closeModal">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
@@ -23,11 +33,11 @@
 @push('scripts')
     <script>            
         (function() {
-            window.addEventListener('show-detail-[model-snake]-modal', event => {
+            window.addEventListener('open_detail_[model-snake]_modal', event => {
                 $('#detail[model]Modal').modal('show');
             });
             
-            window.addEventListener('close-detail-[model-snake]-modal', event => {
+            window.addEventListener('close_detail_[model-snake]_modal', event => {
                 $('#detail[model]Modal').modal('hide');
             });
         })();

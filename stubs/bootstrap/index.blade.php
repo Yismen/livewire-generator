@@ -1,16 +1,17 @@
 <div class="container mx-auto">
     <div class="card">
-        <div class="card-body px-0 row justify-content-between">
-            <div class="col-md-4">
-                <h4 class="card-title px-5">
-                    {{ __('List') }}
-                </h4>
-            </div>
-            <div class="col-md-8">
-                <div class="row justify-content-between mx-2">
-                    <div class="col-12 col-lg-8 d-flex justify-content-end p-0">
+        <div class="card-body">
+            <div class="align-items-baseline row">
+                <div class="col-lg-4">
+                    <h4 class="card-title">
+                        {{ __('[model-plural]') }}
+                        <span class="badge badge-info text-light">{{ $[model-snake-plural]->total() }}</span>
+                    </h4>
+                </div>
+                <div class="col-lg-8">
+                    <div class="d-flex justify-content-lg-end justify-content-start">
                         {{-- Pagination Amount --}}
-                        <div class="form-group mr-2">
+                        <div class="mr-2">
                             {{-- <label for=""></label> --}}
                             <select class="form-control" wire:model="amount">
                                 @foreach ($this->filterAmounts($[model-snake-plural]->total()) as $interval)
@@ -25,7 +26,7 @@
                             </select>
                         </div>
                         {{-- Search --}}
-                        <div class="form-group" wire:ignore>
+                        <div class="mr-2" wire:ignore>
                             <div class="input-group">
                                 <input type="text"
                                 class="form-control" wire:model.debounce.500ms="search" aria-describedby="helpId" placeholder="Search">
@@ -34,62 +35,50 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-        
-                    {{-- <div class="col-12 col-lg-4 d-flex justify-content-between">
-                        <div class="dropdown open w-50">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                                {{ __('Download') }}
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="triggerId">
-                                <a class="dropdown-item" href="{{ route('[model-snake].download', ['status' => null]) }}">{{ __('All') }}</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-success" href="{{ route('[model-snake].download', ['status' => 'actives']) }}">{{ __('Actives') }}</a>
-                                <a class="dropdown-item text-danger" href="{{ route('[model-snake].download', ['status' => 'inactives']) }}">{{ __('Inactives') }}</a>
-                            </div>
-                        </div> --}}
-                    
                         <div class="">
-                            @livewire('[model-snake].[model-snake]-form')
-                            @livewire('[model-snake].[model-snake]-detail')
+                            @livewire('[model-name-kebab].[model-name-kebab]-form')
+                            @livewire('[model-name-kebab].[model-name-kebab]-detail')
                         </div>
                     </div>
                 </div>
+                {{-- col --}}
             </div>
-            
+            {{-- .row --}}
         </div>
+        {{-- car-body --}}
     </div>
-
-    <div class="card">
+    {{-- card --}}
+    <div class="card mt-2">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-sm table-hover m-0">
                     <thead>
                         <tr>
                             <th>
-                                <a href="#" wire:click.prevent="sortBy('name')" class="flex flex-row justify-between items-center">
+                                <a href="#" wire:click.prevent="sortBy('name')" class="d-flex flex-row justify-content-start">
                                     {{ __('Name') }} 
-                                    <span>{{ $this->getIcon('name') }}</span>
+                                    <span>{!! $this->getIcon('name') !!}</span>
                                 </a>
                             </th>
-                            <th>Actions</th>
+
+                            <th class="col-2 col-lg-1">{{ __('Actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($[model-snake-plural] as $[model-snake])
                             <tr>
                                 <td>{{ $[model-snake]->name }}</td>
+
                                 <td>
                                     <a href="#" class="btn btn-warning btn-sm" 
                                         wire:click.prevent="edit({{ $[model-snake]->id }})"
                                         title="{{ __('Edit') }}"
                                     >
-                                        @include('livewire.icons.pencil')                                         
+                                        @include('livewire.icons.pencil')       
                                     </a>
                                     <a href="#" 
-                                        class="btn btn-default btn-sm" 
-                                        wire:click.prevent="detail({{ $[model-snake]->id }})"
+                                        class="btn btn-default btn-sm border" 
+                                        wire:click.prevent="show({{ $[model-snake]->id }})"
                                         title="{{ __('Details') }}"
                                     >
                                         @include('livewire.icons.eye')                                         
@@ -101,9 +90,11 @@
                 </table>
             </div>
         </div>
-
-        <div class="card-footer">            
-            {{ $[model-snake-plural]->links() }}
-        </div>
+        
+        @if ($[model-snake-plural]->hasPages())
+            <div class="card-footer">            
+                {{ $[model-snake-plural]->links() }}
+            </div>
+        @endif
     </div>
 </div>
