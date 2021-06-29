@@ -27,10 +27,10 @@
            
         </div>
 
-        <x-slot name="footer">            
+        <div class="p-3 bg-gray-100 flex justify-end">            
             <x-jet-secondary-button wire:click="closeModal()" class="text-dark bg-white">
-                {{ __('Cancel') }}
+                {{ __('Close') }}
             </x-jet-secondary-button>
-        </x-slot>
+        </div>
     </x-jet-modal>
 </div>

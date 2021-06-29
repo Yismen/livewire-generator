@@ -196,10 +196,12 @@ class [model]Form extends Component
      *
      * @return void
      */
-    public function closeModal(string $browser_event_name = null)
+    public function closeModal(string $browser_event_name = null, bool $keep_base_modal = false)
     {
         $this->resetValidation();
-        $this->reset(['fields', 'is_editing', 'showDelete', 'show']);
+        $this->reset(['showDelete']);
+
+        $this->show = $keep_base_modal;
 
         if ($browser_event_name) {
             $this->dispatchBrowserEvent($browser_event_name);

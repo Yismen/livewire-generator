@@ -56,7 +56,7 @@
                 {{-- //Delete Button. Uncomment to enable deleting models --}}
                 {{-- @if ($is_editing)                        
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-danger" wire:click.prevent="prepareDelete({{ $employee_photo->id }})">
+                        <button type="button" class="btn btn-danger" wire:click.prevent="prepareDelete({{ $[model-snake]->id }})">
                             {{  __('Delete') }}
                         </button> 
                     </div>                  
