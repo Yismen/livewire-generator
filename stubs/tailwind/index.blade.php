@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="min-w-full overflow-x-auto">
-            <div class="inline-block">
+            <div class="inline-block min-w-full">
                 <table class="min-w-full table-auto">
                     <thead>
                         <tr>
@@ -48,7 +48,7 @@
                                 </a>
                             </th>
         
-                            <th class="border-b border-black font-medium font-semibold lg:w-2/12 md:w-3/12 px-5 py-3 text-gray-500 text-left text-xs tracking-wider uppercase w-4/12">                    
+                            <th class="border-b border-black font-medium font-semibold md:w-2/12 px-5 py-3 sm:w-3/12 text-gray-500 text-left text-xs tracking-wider uppercase w-4/12">                    
                                 {{ __('Actions') }}
                             </th>
                         </tr>
