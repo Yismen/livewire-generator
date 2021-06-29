@@ -35,26 +35,38 @@ abstract class BaseFileCreator implements FileCreatorContract
 
     public function createFile()
     {
-        if (File::exists($this->destination_file_name)) {
-            if (!$this->generator->getForce()) {
-                if ($this->warn_file_exists) {
-                    $this->warns[] = "File {$this->destination_file_name} exists. Pass the --force flag to override. File Not created!";
-                }
-                return $this; // Do nothing
-            }
+        if (!File::exists($this->destination_file_name)) {
+            $this->handleCreateFile();
+            return $this;
         }
 
-        File::ensureDirectoryExists($this->main_destination_folder, 0755, true);
-        $file = File::put($this->destination_file_name, $this->content);
+        if ($this->overrideExistingFiles()) {
+            $this->handleCreateFile();
 
-        $this->infos[] = "Created file {$this->destination_file_name}";
+            $this->warns[] = "File {$this->destination_file_name} exists. Pass the --force flag to override. File Not created!";
 
-        return $this;
+            return $this;
+        }
+
+        return $this; // Do nothing
     }
 
     abstract protected function getMainDestinationFolder();
 
     abstract protected function getFileModelName();
+
+    protected function handleCreateFile()
+    {
+        File::ensureDirectoryExists($this->main_destination_folder, 0755, true);
+        $file = File::put($this->destination_file_name, $this->content);
+
+        $this->infos[] = "File {$this->destination_file_name} has been created!";
+    }
+
+    protected function overrideExistingFiles(): bool
+    {
+        return $this->generator->getForce() && $this->warn_file_exists;
+    }
 
     protected function parseContent($content)
     {
