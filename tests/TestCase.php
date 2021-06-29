@@ -35,9 +35,9 @@ class TestCase extends TestbenchTestCase
         parent::tearDown();
 
         // Remove all files to assure tests are working properly
-        // $this->deleteFilesRecursevely($this->viewsDirectory . '/icons/');
-        // $this->deleteFilesRecursevely($this->viewsDirectory);
-        // $this->deleteFilesRecursevely($this->classesDirectory);
+        $this->deleteFilesRecursevely($this->viewsDirectory . '/icons/');
+        $this->deleteFilesRecursevely($this->viewsDirectory);
+        $this->deleteFilesRecursevely($this->classesDirectory);
     }
 
     /**
