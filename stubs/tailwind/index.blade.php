@@ -59,7 +59,7 @@
                                 <td class="px-4 py-1 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">{{ $[model-snake]->name }}</td>
                                 
                                 <td class="px-4 py-1 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
-                                    <div class="inline-block whitespace-no-wrap">
+                                    <div class="flex gap-1">
                                         <x-jet-button 
                                             wire:click.prevent="edit({{ $[model-snake]->id }})" 
                                             class="bg-yellow-800 hover:bg-yellow-700 active:bg-yellow-900 focus:border-yellow-900 px-2 py-1" 

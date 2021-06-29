@@ -15,6 +15,16 @@ class [model]Detail extends Component
     public [model] $[model-snake];
 
     protected $listeners = ['wantsShow[model]' => 'show'];
+    /**
+     * Component constructor method
+     *
+     * @param [model] $[model-snake]
+     * @return void
+     */
+    public function mount([model] $[model-snake] = null)
+    {
+        $this->[model-snake] = $[model-snake];
+    }
 
     public function render()
     {
