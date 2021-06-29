@@ -1,7 +1,7 @@
 <div class="inline-flex">
     <x-jet-button wire:click.prevent="create()">
         {{ __('Add') }}
-    
+    </x-jet-button>
     {{-- // Create or Update Modal --}}
     <x-jet-dialog-modal wire:model="show">
         <x-slot name="title">
@@ -35,42 +35,50 @@
                         </div>
                     </div>
                     {{-- ./Row --}}
+                    
                 </div>
             </x-slot>
+            
             <x-slot name="footer">
                 @if ($is_editing)
-                    <x-jet-button type="submit" class="bg-green-800 hover:bg-green-700 active:bg-green-900 focus:border-green-900 px-2 py-1">
+                    <x-jet-button type="button" wire:click.prevent="update"  class="bg-green-800 hover:bg-green-700 active:bg-green-900 focus:border-green-900 px-2 py-1">
                         {{ __('Update') }}
                     </x-jet-button>
                 @else
-                    <x-jet-button type="submit">
+                    <x-jet-button type="button" wire:click.prevent="store" >
                         {{ __('Create') }}
                     </x-jet-button>
                 @endif
             </x-slot>
-        </form>
+        </form>        
+            
         {{-- //Delete Button. Uncomment to enable deleting models --}}
         {{-- @if ($is_editing)
-            <x-slot name="footer bg-gray-300">
-                <div class="flex mt-4"> 
-                    <x-jet-danger-button class="mr-1" wire:click.prevent="prepareDelete({{ $[model-snake] }})">
-                        {{ __('Delete') }}
-                    </x-jet-danger-button>
-                </div>
-            </x-slot>
+            <div class="border-t-2 mt-5 py-5 ">
+                <x-jet-danger-button class="mr-1" wire:click.prevent="prepareDelete({{ $[model-snake]->id }})">
+                    {{ __('Delete') }}
+                </x-jet-danger-button>
+            </div>
         @endif --}}
     </x-jet-dialog-modal>
 
     {{-- // Delete Modal --}}
-    <x-jet-confirmation-modal wire:model="deleteModal">
+    <x-jet-confirmation-modal wire:model="showDelete">
         <x-slot name="title">
-            {{ __('Delete') }} {{ __('[model]') }} {{ $fields['name'] ?? '' }}
+            <div class="align-middle flex justify-between justify-items-center text-lg">
+                {{ __('Delete') }} {{ __('Activity') }} {{ $fields['name'] ?? '' }}
+                <button wire:click.prevent="closeModal('', true)" type="button" class="text-gray-300 hover:text-red-600 focus:outline-none">
+                    <svg class="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </button>
+            </div> 
         </x-slot>
         <x-slot name="content">
             {{ _('You are about to delete this record from the database, which CAN NOT be reverterd. Are you sure you want proceed?') }}
         </x-slot>
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="closeModal()" class="text-dark bg-white">
+            <x-jet-secondary-button wire:click="closeModal('', true)" class="text-dark bg-white">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
             <x-jet-danger-button wire:click="delete()">
