@@ -44,6 +44,13 @@
                     <x-jet-button type="button" wire:click.prevent="update"  class="bg-green-800 hover:bg-green-700 active:bg-green-900 focus:border-green-900 px-2 py-1">
                         {{ __('Update') }}
                     </x-jet-button>
+            
+                    {{-- //Delete Button. Uncomment to enable deleting models --}}
+                    {{-- <div class="border-t-2 mt-5 py-5 ">
+                        <x-jet-danger-button class="mr-1" wire:click.prevent="prepareDelete({{ $activity->id }})">
+                            {{ __('Delete') }}
+                        </x-jet-danger-button>
+                    </div> --}}
                 @else
                     <x-jet-button type="button" wire:click.prevent="store" >
                         {{ __('Create') }}
@@ -51,21 +58,12 @@
                 @endif
             </x-slot>
         </form>        
-            
-        {{-- //Delete Button. Uncomment to enable deleting models --}}
-        {{-- @if ($is_editing)
-            <div class="border-t-2 mt-5 py-5 ">
-                <x-jet-danger-button class="mr-1" wire:click.prevent="prepareDelete({{ $[model-snake]->id }})">
-                    {{ __('Delete') }}
-                </x-jet-danger-button>
-            </div>
-        @endif --}}
     </x-jet-dialog-modal>
 
     {{-- // Delete Modal --}}
     <x-jet-confirmation-modal wire:model="showDelete">
         <x-slot name="title">
-            <div class="align-middle flex justify-between justify-items-center text-lg">
+            <div class="align-middle flex justify-between justify-items-center text-lg font-bold text-red-700">
                 {{ __('Delete') }} {{ __('Activity') }} {{ $fields['name'] ?? '' }}
                 <button wire:click.prevent="closeModal('', true)" type="button" class="text-gray-300 hover:text-red-600 focus:outline-none">
                     <svg class="h-5 w-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -75,7 +73,9 @@
             </div> 
         </x-slot>
         <x-slot name="content">
-            {{ _('You are about to delete this record from the database, which CAN NOT be reverterd. Are you sure you want proceed?') }}
+            <p class="text-red-600">
+                {{ _('You are about to delete this record from the database, which CAN NOT be reverterd. Are you sure you want proceed?') }}
+            </p>
         </x-slot>
         <x-slot name="footer">
             <x-jet-secondary-button wire:click="closeModal('', true)" class="text-dark bg-white">

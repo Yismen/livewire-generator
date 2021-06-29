@@ -44,7 +44,7 @@
                             <th class="font-medium text-gray-500 border-b border-black font-semibold px-5 py-3 text-left text-xs tracking-wider uppercase">
                                 <a href="#" wire:click.prevent="sortBy('name')" class="flex flex-row justify-between items-center">
                                     {{ __('Name') }} 
-                                    <span>{{ $this->getIcon('name') }}</span>
+                                    <span>{!! $this->getIcon('name') !!}</span>
                                 </a>
                             </th>
         
