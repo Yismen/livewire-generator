@@ -5,7 +5,7 @@
                 <div class="col-lg-4">
                     <h4 class="card-title">
                         {{ __('[model-plural]') }}
-                        <span class="badge badge-info text-light">{{ $[model-snake-plural]->total() }}</span>
+                        <span class="badge badge-dark">{{ $[model-snake-plural]->total() }}</span>
                     </h4>
                 </div>
                 <div class="col-lg-8">
@@ -55,7 +55,7 @@
                     <thead>
                         <tr>
                             <th>
-                                <a href="#" wire:click.prevent="sortBy('name')" class="d-flex flex-row justify-content-start">
+                                <a href="#" wire:click.prevent="sortBy('name')" class="d-flex flex-row justify-content-between text-dark text-uppercase">
                                     {{ __('Name') }} 
                                     <span>{!! $this->getIcon('name') !!}</span>
                                 </a>

@@ -1,5 +1,5 @@
 <div class="inline-flex">
-    <button type="button" wire:click.prevent="create()"  data-toggle="modal" class="btn btn-primary">
+    <button type="button" wire:click.prevent="create()"  data-toggle="modal" class="btn btn-dark">
         {{ __('Add') }}
     </button>  
     <!-- Create or Update Modal -->    

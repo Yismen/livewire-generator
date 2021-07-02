@@ -4,7 +4,7 @@
             <div class="flex items-center justify-between lg:mr-2 lg:w-1/2 w-full">
                 <h4 class="font-semibold text-xl text-gray-800 leading-tight p-3">
                     {{ __('[model-plural]') }}
-                    <span class="p-2 bg-blue-400 text-sm rounded text-gray-50 font-bold">{{ $[model-snake-plural]->total() }}</span>
+                    <span class="bg-gray-800 font-bold p-2 py-1 rounded text-sm text-white">{{ $[model-snake-plural]->total() }}</span>
                 </h4>
             </div>
             <div class="flex justify-between lg:ml-2 lg:mt-0 lg:w-1/2 mt-5 self-start w-full md:w-8/12">
