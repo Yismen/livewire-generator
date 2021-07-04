@@ -1,4 +1,5 @@
 <div class="inline-flex">
+    <!-- Bootstrap Form View -->
     <button type="button" wire:click.prevent="create()"  data-toggle="modal" class="btn btn-dark">
         {{ __('Add') }}
     </button>  

@@ -1,4 +1,5 @@
 <div class="inline-flex">
+        <!-- Tailwind Form View -->
     <x-jet-button wire:click.prevent="create()">
         {{ __('Add') }}
     </x-jet-button>

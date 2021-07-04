@@ -1,4 +1,5 @@
 <div class="container mx-auto">
+    <!-- Tailwind Index View -->
     <div class="bg-white max-w-7xl mx-auto shadow-md my-3">        
         <div class="border-b flex flex-col lg:flex-row items-center justify-content-between p-4">
             <div class="flex items-center justify-between lg:mr-2 lg:w-1/2 w-full">
@@ -59,7 +60,7 @@
                                 <td class="px-4 py-1 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">{{ $[model-snake]->name }}</td>
                                 
                                 <td class="px-4 py-1 bg-white text-sm @if (!$loop->last) border-gray-200 border-b @endif">
-                                    <div class="flex gap-1">
+                                    <div class="flex gap-1 whitespace-no-wrap">
                                         <x-jet-button 
                                             wire:click.prevent="edit({{ $[model-snake]->id }})" 
                                             class="bg-yellow-800 hover:bg-yellow-700 active:bg-yellow-900 focus:border-yellow-900 px-2 py-1" 

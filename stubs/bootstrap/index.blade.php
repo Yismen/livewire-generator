@@ -1,4 +1,5 @@
 <div class="container mx-auto">
+    <!-- Bootstrap Index View -->
     <div class="card">
         <div class="card-body">
             <div class="align-items-baseline row">

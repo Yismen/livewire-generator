@@ -1,4 +1,5 @@
 <div class="inline-flex">
+    <!-- Tailwind Detail View -->
     {{-- // Show Details Modal --}}
     <x-jet-modal wire:model="show">
         <div class="align-middle flex items-center justify-between px-4">
