@@ -172,6 +172,13 @@ trait PaginationTrait
 
             if (count($sorts) == 1) {
                 $this->model->orderBy($sorts[0], $this->sortDirection);
+            } else {
+                $relationhip = $sorts[0];
+                $field = $sorts[1];
+
+                $this->model->with([$relationhip => function ($query) use ($field) {
+                    $query->orderBy($field);
+                }]);
             }
         }
 

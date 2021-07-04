@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\File;
 
 class Icons extends BaseFileCreator
 {
-    protected string $stub_path = '../../pagination.stub';
+    protected string $stub_path = '../../pagination.php';
 
     protected string $file_name_sufix = '';
 
